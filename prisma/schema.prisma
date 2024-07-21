@@ -43,7 +43,7 @@ model Event {
   description      String?
   startTime        DateTime
   endTime          DateTime
-  quantity         Int         // Menyimpan kapasitas total acara
+  quantity         Int
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @default(now())
   createdById      String

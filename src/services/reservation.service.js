@@ -26,6 +26,16 @@ const createReservation = async (reservationBody) => {
       throw new ApiError(httpStatus.BAD_REQUEST, 'No slots available');
     }
 
+    const existingReservation = await prisma.reservation.findFirst({
+      where: {
+        userId,
+        eventId,
+      },
+    });
+
+    if (existingReservation) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'You have already reserved this event');
+    }
 
     const reservation = await prisma.reservation.create({
       data: {
