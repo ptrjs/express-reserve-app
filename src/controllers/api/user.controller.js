@@ -1,5 +1,4 @@
 const httpStatus = require('http-status');
-const pick = require('../../utils/pick');
 const ApiError = require('../../utils/ApiError');
 const catchAsync = require('../../utils/catchAsync');
 const { userService } = require('../../services');
@@ -9,18 +8,18 @@ const createUser = catchAsync(async (req, res) => {
 
   res.status(httpStatus.CREATED).send({
     status: httpStatus.CREATED,
-    message: "Create User Success",
-    data: user
+    message: 'Create User Success',
+    data: user,
   });
 });
 
-const getUsers = catchAsync(async (req, res) => {
+const getUsers = catchAsync(async (_, res) => {
   const result = await userService.queryUsers();
 
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
-    message: "Get Users Success",
-    data: result
+    message: 'Get Users Success',
+    data: result,
   });
 });
 
@@ -32,8 +31,8 @@ const getUser = catchAsync(async (req, res) => {
 
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
-    message: "Get User Success",
-    data: user
+    message: 'Get User Success',
+    data: user,
   });
 });
 
@@ -42,8 +41,8 @@ const updateUser = catchAsync(async (req, res) => {
 
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
-    message: "Update User Success",
-    data: user
+    message: 'Update User Success',
+    data: user,
   });
 });
 
@@ -52,8 +51,8 @@ const deleteUser = catchAsync(async (req, res) => {
 
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
-    message: "Delete User Success",
-    data: null
+    message: 'Delete User Success',
+    data: null,
   });
 });
 
