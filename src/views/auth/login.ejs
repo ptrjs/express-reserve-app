@@ -1,0 +1,29 @@
+<div class="container">
+  <div>
+    <h1 style="text-align: center;">Masuk</h1>
+
+    <form method="post" action="/v1/auth/login">
+      <p>
+        <label for="email">Email:</label>
+        <input type="email" name="email" required/>
+      </p>
+      <p>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required/>
+      </p>
+      <p>
+        <input type="submit"/>
+      </p>
+    </form>
+
+    <p><a href="/auth/register">atau regristasi</a></p>
+  </div>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>

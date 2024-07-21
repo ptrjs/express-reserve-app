@@ -1,0 +1,33 @@
+<div class="container">
+  <div>
+    <h1 style="text-align: center;">Registrasi</h1>
+
+    <form method="post" action="/v1/auth/register">
+      <p>
+        <label for="name">Name:</label>
+        <input type="text" name="name" required/>
+      </p>
+      <p>
+        <label for="email">Email:</label>
+        <input type="email" name="email" required/>
+      </p>
+      <p>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required/>
+      </p>
+      <p>
+        <input type="submit"/>
+      </p>
+    </form>
+
+    <p><a href="/auth/login">atau login</a></p>
+  </div>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
