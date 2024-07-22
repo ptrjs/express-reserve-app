@@ -1,6 +1,8 @@
 const express = require('express');
 const authRoute = require('./auth.route');
 const homeRoute = require('./home.route');
+const eventRoute = require('./event.route');
+const reservationRoute = require('./reservation.route');
 
 const routes = [
   {
@@ -10,6 +12,14 @@ const routes = [
   {
     path: '/home',
     route: homeRoute,
+  },
+  {
+    path: '/event',
+    route: eventRoute,
+  },
+  {
+    path: '/reservation',
+    route: reservationRoute,
   },
 ];
 

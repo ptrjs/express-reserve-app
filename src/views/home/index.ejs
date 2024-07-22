@@ -1,3 +1,4 @@
+<%- include('../components/header') %>
 <%- include('../components/navbar', { navs }) %>
 <h1>Halo <%= username %></h1>
 <ul>
@@ -8,3 +9,4 @@
 <form method="post" action="/auth/logout">
   <input type="submit" value="log out"/>
 </form>
+<%- include('../components/footer') %>

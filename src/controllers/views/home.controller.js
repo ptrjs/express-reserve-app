@@ -41,4 +41,5 @@ const homePage = async (req, res) => {
 
 module.exports = {
   homePage,
+  createNavlist,
 };
