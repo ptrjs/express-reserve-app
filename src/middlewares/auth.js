@@ -30,4 +30,24 @@ const auth =
       .catch((err) => next(err));
   };
 
-module.exports = auth;
+const adminAuth =
+  (...requiredRights) =>
+  async (req, res, next) => {
+    return new Promise((resolve, reject) => {
+      passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject, requiredRights))(req, res, next);
+    })
+      .then(() => {
+        if (req.user.role === 'admin') {
+          next();
+        } else {
+          throw new ApiError(httpStatus.FORBIDDEN, 'You Are Not Admin');
+        }
+      })
+      .catch((err) => next(err));
+  };
+
+
+module.exports = {
+  auth,
+  adminAuth
+};
