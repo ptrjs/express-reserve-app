@@ -6,6 +6,8 @@ const cors = require('cors');
 const passport = require('passport');
 const httpStatus = require('http-status');
 const path = require('path');
+const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const config = require('./config/config');
 const morgan = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
@@ -21,6 +23,10 @@ if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
+
+// set cookie
+app.use(cookieParser());
+app.use(cookieSession({ name: 'session', keys: ['ke2', 'ke1'] }));
 
 // set security HTTP headers
 app.use(helmet());
@@ -52,6 +58,8 @@ if (config.env === 'production') {
 
 // v1 api routes
 app.use('/v1', routes);
+
+app.get('/', (_, res) => res.redirect('/home'));
 
 // add views route
 app.use('/', viewRoutes);

@@ -53,6 +53,8 @@ const errorHandler = (err, req, res, next) => {
     message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR];
   }
 
+  if (statusCode === httpStatus.NOT_FOUND) return res.render('error/notfound');
+
   res.locals.errorMessage = err.message;
 
   const response = {

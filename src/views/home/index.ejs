@@ -1,0 +1,5 @@
+<%- include('../components/navbar', { navs }) %>
+<h1>Halo <%= username %></h1>
+<form method="post" action="/auth/logout">
+  <input type="submit" value="log out"/>
+</form>

@@ -1,10 +1,15 @@
 const express = require('express');
 const authRoute = require('./auth.route');
+const homeRoute = require('./home.route');
 
 const routes = [
   {
     path: '/auth',
     route: authRoute,
+  },
+  {
+    path: '/home',
+    route: homeRoute,
   },
 ];
 
