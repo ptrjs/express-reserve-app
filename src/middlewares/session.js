@@ -27,7 +27,10 @@ const whenLogin = async (req, res, next) => {
       }),
     });
 
-    if (!response.ok) return res.redirect('/auth/login');
+    if (!response.ok) {
+      req.session.token = undefined;
+      return res.redirect('/auth/login');
+    }
     req.session.token = await response.json();
   }
   return next();

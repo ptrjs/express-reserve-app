@@ -44,6 +44,10 @@ const registerPage = (_, res) => {
  * @param {import("express").Response} res
  */
 const registerForm = async (req, res) => {
+  if ('admin' in req.body) {
+    delete req.body.admin;
+    req.body.role = 'admin';
+  }
   const response = await fetch('/v1/auth/register', {
     headers: {
       'Content-Type': 'application/json',
