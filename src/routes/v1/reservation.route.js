@@ -10,22 +10,22 @@ const router = express.Router();
 router
   .route('/')
   .post(
-    //auth(),
+    auth(),
     validate(reservationValidation.createReservation), reservationController.createReservation)
   .get(
-    //auth(),
+    auth(),
     reservationController.getReservations);
 
 router
   .route('/:reservationId')
   .get(
-    //auth(),
+    auth(),
     validate(reservationValidation.getReservation), reservationController.getReservation)
   .patch(
-    //auth(),
+    auth(),
     validate(reservationValidation.updateReservation), reservationController.updateReservation)
   .delete(
-    //auth(),
+    auth(),
     validate(reservationValidation.deleteReservation), reservationController.deleteReservation);
 
 module.exports = router;

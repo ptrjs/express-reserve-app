@@ -11,21 +11,26 @@ router
   .route('/')
   .post(
     //auth(),
+    adminAuth(),
     validate(eventValidation.createEvent), eventController.createEvent)
   .get(
     //auth(),
+    adminAuth(),
     eventController.getEvents);
 
 router
   .route('/:eventId')
   .get(
     //auth(),
+    adminAuth(),
     validate(eventValidation.getEvent), eventController.getEvent)
   .patch(
     //auth(),
+    adminAuth(),
     validate(eventValidation.updateEvent), eventController.updateEvent)
   .delete(
     //auth(),
+    adminAuth(),
     validate(eventValidation.deleteEvent), eventController.deleteEvent);
 
 module.exports = router;

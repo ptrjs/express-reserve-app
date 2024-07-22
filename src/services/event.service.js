@@ -34,6 +34,13 @@ const getEventById = async (id) => {
     where: {
       id,
     },
+    include: {
+      reservations: {
+        include: {
+          User: true,
+        }
+      }
+    }
   });
 };
 
@@ -83,6 +90,13 @@ const getAllEvent = async (skip = 0, take = 10) => {
   const events = await prisma.event.findMany({
     skip: parseInt(skip),
     take: parseInt(take),
+    include: {
+      reservations: {
+        include: {
+          User: true,
+        },
+      },
+    },
   });
   return events;
 };

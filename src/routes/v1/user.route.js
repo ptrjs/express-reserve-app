@@ -10,21 +10,26 @@ router
   .route('/')
   .post(
     //auth('manageUsers'),
+    adminAuth(),
     validate(userValidation.createUser), userController.createUser)
   .get(
     //auth('getUsers'),
+    adminAuth(),
     validate(userValidation.getUsers), userController.getUsers);
 
 router
   .route('/:userId')
   .get(
     //auth('getUsers'),
+    adminAuth(),
     validate(userValidation.getUser), userController.getUser)
   .patch(
     //auth('manageUsers'),
+    adminAuth(),
     validate(userValidation.updateUser), userController.updateUser)
   .delete(
     //auth('manageUsers'),
+    adminAuth(),
     validate(userValidation.deleteUser), userController.deleteUser);
 
 module.exports = router;
