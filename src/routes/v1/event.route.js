@@ -14,15 +14,13 @@ router
     adminAuth(),
     validate(eventValidation.createEvent), eventController.createEvent)
   .get(
-    //auth(),
-    adminAuth(),
+    auth(),
     eventController.getEvents);
 
 router
   .route('/:eventId')
   .get(
-    //auth(),
-    adminAuth(),
+    auth(),
     validate(eventValidation.getEvent), eventController.getEvent)
   .patch(
     //auth(),
