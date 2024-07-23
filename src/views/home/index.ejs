@@ -1,5 +1,20 @@
+<%- include('../components/header') %>
 <%- include('../components/navbar', { navs }) %>
 <h1>Halo <%= username %></h1>
+<h2>Event yang bisa kamu ikuti !</h2>
+<ul>
+  <% available.forEach(x => {%>
+  <li><a href="reservation/<%= x.id %>"><%= x.title %></a></li>
+  <% }); %>
+</ul>
+
+<h2>Event yang kamu ikuti!</h2>
+<ul>
+  <% yourReservations.forEach(x => { %>
+  <li><a href="reservation/<%= x.id %>"><%= x.title %></a></li>
+  <% }); %>
+</ul>
 <form method="post" action="/auth/logout">
   <input type="submit" value="log out"/>
 </form>
+<%- include('../components/footer') %>

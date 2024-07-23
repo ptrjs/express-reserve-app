@@ -1,0 +1,11 @@
+<%- include('../components/header') %>
+<%- include('../components/navbar', { navs }) %>
+
+<h1>Reservation</h1>
+<ul id="list">
+  <% events.forEach(x => { %>
+  <li><%- x %></li>
+  <% }) %>
+</ul>
+
+<%- include('../components/footer') %>

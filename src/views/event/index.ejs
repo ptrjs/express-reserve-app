@@ -1,0 +1,12 @@
+<%- include('../components/header') %>
+<%- include('../components/navbar', { navs }) %>
+
+<h1>Event</h1>
+<a href="/event/create">Create</a>
+<ul id="list">
+  <% events.forEach(x => { %>
+  <li><%- x %></li>
+  <% }) %>
+</ul>
+
+<%- include('../components/footer') %>

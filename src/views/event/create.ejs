@@ -1,0 +1,36 @@
+<%- include('../components/header') %>
+
+<div class="container">
+  <div>
+    <h1><%= message %></h1>
+    <h1 style="text-align: center;">Buat Event</h1>
+
+    <form action="create" method="post">
+      <p>
+        <label for="title">Judul:</label>
+        <input name="title" type="text" required/>
+      </p>
+      <p>
+        <label for="description">Deskripsi:</label>
+        <input name="description" type="text" required/>
+      </p>
+      <p>
+        <label for="startTime">Mulai:</label>
+        <input name="startTime" type="datetime-local" required/>
+      </p>
+      <p>
+        <label for="endTime">Berakhir:</label>
+        <input name="endTime" type="datetime-local" required/>
+      </p>
+      <p>
+        <label for="quantity">Kuantitas:</label>
+        <input name="quantity" type="number" min="0" required/>
+      </p>
+      <p>
+        <input type="submit" />
+      </p>
+    </form>
+  </div>
+</div>
+
+<%- include('../components/footer') %>

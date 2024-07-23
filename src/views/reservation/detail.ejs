@@ -1,0 +1,42 @@
+<%- include('../components/header') %>
+
+<div class="container">
+  <div>
+    <h1 style="text-align: center;">Even Detail</h1>
+    <h2>Judul</h2>
+    <p><%= data.title %></p>
+
+    <h2>Deskripsi</h2>
+    <p><%= data.description %></p>
+
+    <h2>Mulai</h2>
+    <p><%= data.startTime %></p>
+
+    <h2>Selesai</h2>
+    <p><%= data.endTime %></p>
+
+    <h2>Kuantitas</h2>
+    <p><%= data.quantity %></p>
+
+    <% if (data.reservations.length) { %>
+    <h2>Reservasi</h2>
+    <ul>
+      <% data.reservations.forEach(x => { %>
+      <li><%= x.User.name %></li>
+      <% }); %>
+    </ul>
+    <% } %>
+
+    <% if (reservation) {%>
+    <form method="post" action="/reservation/delete/<%= reservation.id %>">
+      <input type="submit" value="batalkan reservasi">
+    </form>
+    <% } else if (data.quantity) {%>
+    <form method="post" action="/reservation/<%= data.id %>">
+      <input type="submit" value="buat reservasi">
+    </form>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../components/footer') %>
