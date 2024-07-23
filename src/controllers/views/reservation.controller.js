@@ -93,8 +93,7 @@ const reservationDeleteForm = async (req, res) => {
       Authorization: `Bearer ${req.session.token.access.token}`,
     },
   });
-  res.redirect('/home');
-  // TODO: add controller;
+  return res.redirect(req.query.redirect || '/home');
 };
 
 module.exports = {
