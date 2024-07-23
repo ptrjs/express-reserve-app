@@ -23,7 +23,7 @@ const fetchEvents = async (req) => {
  */
 const eventPage = async (req, res) => {
   const events = await fetchEvents(req);
-  return res.render('event/index', { navs: createNavlist(req.session.user.role), events });
+  return res.render('event/index', { navs: createNavlist(req.session.user.role), events, select: req.query.select });
 };
 
 /**

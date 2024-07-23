@@ -1,19 +1,80 @@
 <%- include('../components/header') %>
 <%- include('../components/navbar', { navs }) %>
 
-<h1>Event</h1>
-<form action="/event/create">
-  <input type="submit" value="Buat">
-</form>
-<ul id="list">
-  <% events.forEach(x => { %>
-  <li>
-    <form method="post" id="delete-event" action="event/delete?id=<%= x.id %>"/>
-    <a href="/reservation/<%= x.id %>"><%= x.title %></a>
-    <a class="btn btn-outline-warning" role="button" href="event/update?id=<%= x.id %>">ubah</a>
-    <button class="btn btn-outline-danger" type="submit" form="delete-event">hapus</button>
-  </li>
-  <% }); %>
-</ul>
-
+<div class="d-flex flex-row mb-3">
+  <div class="d-flex p-2">
+    <div class="d-flex flex-column gap-2">
+      <div class="border border-dark p-2">
+        <form action="/event/create">
+          <div class="d-flex mb-3">
+            <h1 class="me-auto">Event</h1>
+            <button class="btn btn-outline-success" type="submit">Buat +</button>
+          </div>
+        </form>
+      </div>
+      <% if (events.length) { %>
+      <table class="table border border-dark p-2">
+        <thead>
+          <tr class="text-center">
+            <th scope="col">NO</th>
+            <th scope="col">Nama</th>
+            <th scope="col">Operasi</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        <% events.forEach((x, i) => { %>
+          <tr class="text-center">
+            <th scope="row"><%= i+1 %></th>
+            <td>
+              <a class="text-decoration-none" href="/reservation/<%= x.id %>"><%= x.title %></a>
+            </td>
+            <td>
+              <form id="delete-<%= x.id %>" method="post" action="event/delete?id=<%= x.id %>"></form>
+              <a class="btn btn-outline-warning" role="button" href="event/update?id=<%= x.id %>">ubah</a>
+              <button class="btn btn-outline-danger" type="submit" form="delete-<%= x.id %>">hapus</button>
+              <a role="button" href="?select=<%= i %>" class="btn btn-outline-primary">lihat peserta</a>
+            </td>
+          </tr>
+        <% }); %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <h2 class="border border-dark p-2">Kamu belum membuat event!</h2>
+      <% } %>
+    </div>
+  </div>
+  <% if (select && events[select]) { %>
+  <div class="d-flex p-2">
+    <div class="d-flex flex-column gap-2">
+      <h2 class="border border-dark p-2">Peserta: <%= events[select].title %></h2>
+      <% if (events[select].reservations.length) { %>
+      <table class="table border border-dark p-2">
+        <thead>
+          <tr class="text-center">
+            <th scope="col">NO</th>
+            <th scope="col">Nama Peserta</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          <% events[select].reservations.forEach(({ User }, i) => { %>
+          <tr class="text-center">
+            <th scope="row"><%= i+1 %></th>
+            <td>
+              <%= User.name %>
+            </td>
+            <td>
+              <%= User.email %>
+            </td>
+          </tr>
+        <% }); %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <h2 class="border border-dark p-2">Waduh belum ada peserta nih!</h2>
+      <% } %>
+    </div>
+  </div>
+  <% } %>
+</div>
 <%- include('../components/footer') %>
