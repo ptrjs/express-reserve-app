@@ -3,7 +3,6 @@ const ApiError = require('../../utils/ApiError');
 const catchAsync = require('../../utils/catchAsync');
 const { eventService } = require('../../services');
 
-
 const createEvent = catchAsync(async (req, res) => {
   const event = await eventService.createEvent(req.body);
 
@@ -65,4 +64,3 @@ module.exports = {
   updateEvent,
   deleteEvent,
 };
-

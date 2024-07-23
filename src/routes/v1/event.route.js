@@ -10,29 +10,27 @@ const router = express.Router();
 router
   .route('/')
   .post(
-    //auth(),
+    // auth(),
     adminAuth(),
-    validate(eventValidation.createEvent), eventController.createEvent)
-  .get(
-    auth(),
-    eventController.getEvents);
+    validate(eventValidation.createEvent),
+    eventController.createEvent
+  )
+  .get(auth(), eventController.getEvents);
 
 router
   .route('/:eventId')
-  .get(
-    auth(),
-    validate(eventValidation.getEvent), eventController.getEvent)
+  .get(auth(), validate(eventValidation.getEvent), eventController.getEvent)
   .patch(
-    //auth(),
+    // auth(),
     adminAuth(),
-    validate(eventValidation.updateEvent), eventController.updateEvent)
+    validate(eventValidation.updateEvent),
+    eventController.updateEvent
+  )
   .delete(
-    //auth(),
+    // auth(),
     adminAuth(),
-    validate(eventValidation.deleteEvent), eventController.deleteEvent);
+    validate(eventValidation.deleteEvent),
+    eventController.deleteEvent
+  );
 
 module.exports = router;
-
-
-
-

@@ -13,8 +13,6 @@ const createEvent = async (eventBody) => {
   });
 };
 
-
-
 /**
  * Query for events
  * @returns {Promise<QueryResult>}
@@ -38,9 +36,9 @@ const getEventById = async (id) => {
       reservations: {
         include: {
           User: true,
-        }
-      }
-    }
+        },
+      },
+    },
   });
 };
 

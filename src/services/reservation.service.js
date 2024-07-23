@@ -10,9 +10,7 @@ const ApiError = require('../utils/ApiError');
 const createReservation = async (reservationBody) => {
   const { eventId, userId } = reservationBody;
 
-
   return prisma.$transaction(async (prisma) => {
-
     const event = await prisma.event.findUnique({
       where: { id: eventId },
     });
@@ -20,7 +18,6 @@ const createReservation = async (reservationBody) => {
     if (!event) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Event not found');
     }
-
 
     if (event.quantity <= 0) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'No slots available');
@@ -44,7 +41,6 @@ const createReservation = async (reservationBody) => {
       },
     });
 
-
     const updatedEvent = await prisma.event.update({
       where: { id: eventId },
       data: { quantity: { decrement: 1 } },
@@ -53,8 +49,6 @@ const createReservation = async (reservationBody) => {
     return reservation;
   });
 };
-
-
 
 /**
  * Query for reservations
@@ -85,9 +79,7 @@ const getReservationById = async (id) => {
  * @returns {Promise<Reservation>}
  */
 const updateReservationById = async (reservationId, updateBody) => {
-
   return prisma.$transaction(async (prisma) => {
-
     const reservation = await prisma.reservation.findUnique({
       where: { id: reservationId },
     });
@@ -95,7 +87,6 @@ const updateReservationById = async (reservationId, updateBody) => {
     if (!reservation) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Reservation not found');
     }
-
 
     const event = await prisma.event.findUnique({
       where: { id: reservation.eventId },
@@ -105,20 +96,16 @@ const updateReservationById = async (reservationId, updateBody) => {
       throw new ApiError(httpStatus.NOT_FOUND, 'Event not found');
     }
 
-
     const updatedReservation = await prisma.reservation.update({
       where: { id: reservationId },
       data: updateBody,
     });
 
-
     if (updateBody.eventId && updateBody.eventId !== reservation.eventId) {
-
       await prisma.event.update({
         where: { id: reservation.eventId },
         data: { quantity: { increment: 1 } },
       });
-
 
       await prisma.event.update({
         where: { id: updateBody.eventId },
@@ -129,7 +116,6 @@ const updateReservationById = async (reservationId, updateBody) => {
     return updatedReservation;
   });
 };
-
 
 /**
  * Delete reservation by id
@@ -142,15 +128,12 @@ const deleteReservationById = async (reservationId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Reservation not found');
   }
 
-
   return prisma.$transaction(async (prisma) => {
-
     await prisma.reservation.delete({
       where: {
         id: reservationId,
       },
     });
-
 
     const updatedEvent = await prisma.event.update({
       where: { id: reservation.eventId },

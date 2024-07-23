@@ -67,21 +67,54 @@ const refreshAuth = async (refreshToken) => {
  * @param {string} newPassword
  * @returns {Promise}
  */
+// const resetPassword = async (resetPasswordToken, newPassword) => {
+//   try {
+//     const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
+//     console.log(`Verified reset password token for userId: ${resetPasswordTokenDoc.userId}`);
+//     const user = await userService.getUserById(resetPasswordTokenDoc.user);
+//     if (!user) {
+//       throw new Error('User not found');
+//     }
+//     const hashedPassword = await bcrypt.hash(newPassword, 8);
+//     await userService.updateUserById(user.id, { password: newPassword });
+//     await prisma.token.deleteMany({
+//       where: { userId: user.id, type: tokenTypes.RESET_PASSWORD },
+//     });
+//     console.log(`Password reset for userId: ${user.id}`);
+//   } catch (error) {
+//     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
+//   }
+// };
+
 const resetPassword = async (resetPasswordToken, newPassword) => {
   try {
     const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
-    const user = await userService.getUserById(resetPasswordTokenDoc.user);
-    if (!user) {
-      throw new Error();
+    console.log('Verified reset password token:', resetPasswordTokenDoc);
+
+    const userId = resetPasswordTokenDoc.userId || resetPasswordTokenDoc.user || resetPasswordTokenDoc.sub;
+    console.log(`User ID extracted from token doc: ${userId}`);
+
+    if (!userId) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'User ID not found in token');
     }
-    await userService.updateUserById(user.id, { password: newPassword });
+
+    const user = await userService.getUserById(userId);
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 8);
+    await userService.updateUserById(user.id, { password: hashedPassword });
     await prisma.token.deleteMany({
       where: { userId: user.id, type: tokenTypes.RESET_PASSWORD },
     });
+    console.log(`Password reset for userId: ${user.id}`);
   } catch (error) {
+    console.error('Error in resetPassword:', error);
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
   }
 };
+
 
 /**
  * Verify email
