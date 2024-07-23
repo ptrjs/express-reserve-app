@@ -58,7 +58,7 @@ const registerForm = async (req, res) => {
 
   if (response.code) return res.render('auth/register.ejs', { message: response.message });
   req.session.token = response.tokens;
-  req.session.user = { name: response.userCreated.name, role: response.userCreated.role, id: response.user.id };
+  req.session.user = { name: response.userCreated.name, role: response.userCreated.role, id: response.userCreated.id };
   return res.redirect('/home');
 };
 
