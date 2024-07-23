@@ -3,7 +3,6 @@ const ApiError = require('../../utils/ApiError');
 const catchAsync = require('../../utils/catchAsync');
 const { reservationService } = require('../../services');
 
-
 const createReservation = catchAsync(async (req, res) => {
   const reservation = await reservationService.createReservation(req.body);
 
@@ -65,4 +64,3 @@ module.exports = {
   updateReservation,
   deleteReservation,
 };
-

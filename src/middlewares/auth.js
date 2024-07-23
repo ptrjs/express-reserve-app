@@ -46,8 +46,7 @@ const adminAuth =
       .catch((err) => next(err));
   };
 
-
 module.exports = {
   auth,
-  adminAuth
+  adminAuth,
 };

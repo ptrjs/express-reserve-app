@@ -22,6 +22,7 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
     exp: expires.unix(),
     type,
   };
+  console.log('Generated token payload:', payload);
   return jwt.sign(payload, secret);
 };
 
@@ -35,6 +36,7 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
  * @returns {Promise<Token>}
  */
 const saveToken = async (token, userId, expires, type, blacklisted = false) => {
+  console.log(`Saving token for userId: ${userId}`);
   const tokenDoc = await prisma.token.create({
     data: {
       token,
@@ -44,6 +46,7 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
       blacklisted,
     },
   });
+  console.log(`Token saved: ${tokenDoc.token} for userId: ${userId}`);
   return tokenDoc;
 };
 
@@ -53,16 +56,38 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
  * @param {string} type
  * @returns {Promise<Token>}
  */
-const verifyToken = async (token, type) => {
-  const payload = jwt.verify(token, config.jwt.secret);
-  const tokenDoc = await prisma.token.findFirst({
-    where: { token, type, userId: payload.sub, blacklisted: false },
-  });
+// const verifyToken = async (token, type) => {
+//   const payload = jwt.verify(token, config.jwt.secret);
+//   console.log(`Verifying token for userId: ${payload.sub}`);
+//   const tokenDoc = await prisma.token.findFirst({
+//     where: { token, type, userId: payload.sub, blacklisted: false },
+//   });
 
-  if (!tokenDoc) {
-    throw new Error('Token not found');
+//   if (!tokenDoc) {
+//     throw new Error('Token not found');
+//   }
+//   console.log(`Verified token for userId: ${payload.sub}`);
+//   return tokenDoc;
+// };
+
+const verifyToken = async (token, type) => {
+  try {
+    const payload = jwt.verify(token, config.jwt.secret);
+    console.log('Verified token payload:', payload);
+
+    const tokenDoc = await prisma.token.findFirst({
+      where: { token, type, userId: payload.sub, blacklisted: false },
+    });
+
+    if (!tokenDoc) {
+      throw new Error('Token not found');
+    }
+    console.log(`Verified token for userId: ${payload.sub}`);
+    return tokenDoc;
+  } catch (error) {
+    console.error('Error in verifyToken:', error);
+    throw error;
   }
-  return tokenDoc;
 };
 
 /**
@@ -100,6 +125,7 @@ const generateResetPasswordToken = async (email) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
   }
+  console.log(`Generating reset token for user: ${user.id} with email: ${email}`);
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
   const resetPasswordToken = generateToken(user.id, expires, tokenTypes.RESET_PASSWORD);
   await saveToken(resetPasswordToken, user.id, expires, tokenTypes.RESET_PASSWORD);

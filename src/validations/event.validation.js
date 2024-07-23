@@ -6,9 +6,9 @@ const createEvent = {
     title: Joi.string().required(),
     description: Joi.string().optional(), // Menambahkan deskripsi sebagai opsional
     startTime: Joi.date().iso().required(), // Menambahkan startTime sebagai required
-    endTime: Joi.date().iso().required(),   // Menambahkan endTime sebagai required
+    endTime: Joi.date().iso().required(), // Menambahkan endTime sebagai required
     quantity: Joi.number().integer().min(1).required(), // Menambahkan quantity sebagai required
-    createdById: Joi.string().custom(objectId).required() // Menambahkan createdById sebagai required
+    createdById: Joi.string().custom(objectId).required(), // Menambahkan createdById sebagai required
   }),
 };
 
@@ -29,7 +29,7 @@ const updateEvent = {
       startTime: Joi.date().iso(),
       endTime: Joi.date().iso(),
       quantity: Joi.number().integer().min(1),
-      createdById: Joi.string().custom(objectId)
+      createdById: Joi.string().custom(objectId),
     })
     .min(1),
 };

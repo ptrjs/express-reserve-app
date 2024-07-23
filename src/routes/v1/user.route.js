@@ -1,5 +1,5 @@
 const express = require('express');
-const {auth, adminAuth} = require('../../middlewares/auth');
+const { adminAuth } = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const userValidation = require('../../validations/user.validation');
 const userController = require('../../controllers/api/user.controller');
@@ -9,28 +9,38 @@ const router = express.Router();
 router
   .route('/')
   .post(
-    //auth('manageUsers'),
+    // auth('manageUsers'),
     adminAuth(),
-    validate(userValidation.createUser), userController.createUser)
+    validate(userValidation.createUser),
+    userController.createUser
+  )
   .get(
-    //auth('getUsers'),
+    // auth('getUsers'),
     adminAuth(),
-    validate(userValidation.getUsers), userController.getUsers);
+    validate(userValidation.getUsers),
+    userController.getUsers
+  );
 
 router
   .route('/:userId')
   .get(
-    //auth('getUsers'),
+    // auth('getUsers'),
     adminAuth(),
-    validate(userValidation.getUser), userController.getUser)
+    validate(userValidation.getUser),
+    userController.getUser
+  )
   .patch(
-    //auth('manageUsers'),
+    // auth('manageUsers'),
     adminAuth(),
-    validate(userValidation.updateUser), userController.updateUser)
+    validate(userValidation.updateUser),
+    userController.updateUser
+  )
   .delete(
-    //auth('manageUsers'),
+    // auth('manageUsers'),
     adminAuth(),
-    validate(userValidation.deleteUser), userController.deleteUser);
+    validate(userValidation.deleteUser),
+    userController.deleteUser
+  );
 
 module.exports = router;
 

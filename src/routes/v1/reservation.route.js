@@ -9,27 +9,13 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(
-    auth(),
-    validate(reservationValidation.createReservation), reservationController.createReservation)
-  .get(
-    auth(),
-    reservationController.getReservations);
+  .post(auth(), validate(reservationValidation.createReservation), reservationController.createReservation)
+  .get(auth(), reservationController.getReservations);
 
 router
   .route('/:reservationId')
-  .get(
-    auth(),
-    validate(reservationValidation.getReservation), reservationController.getReservation)
-  .patch(
-    auth(),
-    validate(reservationValidation.updateReservation), reservationController.updateReservation)
-  .delete(
-    auth(),
-    validate(reservationValidation.deleteReservation), reservationController.deleteReservation);
+  .get(auth(), validate(reservationValidation.getReservation), reservationController.getReservation)
+  .patch(auth(), validate(reservationValidation.updateReservation), reservationController.updateReservation)
+  .delete(auth(), validate(reservationValidation.deleteReservation), reservationController.deleteReservation);
 
 module.exports = router;
-
-
-
-

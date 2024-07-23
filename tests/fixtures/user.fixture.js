@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const faker = require('faker');
-const prisma = require('../../prisma')
-const { v4 } = require('uuid')
+const { v4 } = require('uuid');
+const prisma = require('../../prisma');
 
 const password = 'password1';
 const salt = bcrypt.genSaltSync(8);
@@ -35,11 +35,11 @@ const admin = {
 };
 
 const insertUsers = async (users) => {
-  users = users.map((user) => ({ ...user, password: hashedPassword }))
+  users = users.map((user) => ({ ...user, password: hashedPassword }));
   await prisma.user.createMany({
     data: users,
-    skipDuplicates: true
-  })
+    skipDuplicates: true,
+  });
 };
 
 module.exports = {
