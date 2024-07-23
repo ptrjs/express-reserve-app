@@ -13,12 +13,7 @@ const fetchEvents = async (req) => {
     },
   }).then((x) => x.json());
 
-  return response.data
-    .filter((x) => x.createdById === req.session.user.id)
-    .map(
-      (x) =>
-        `<a href="event/update?id=${x.id}">${x.title}</a><form action="event/delete?id=${x.id}" method="post"><input type="submit" value="delete"></form>`
-    );
+  return response.data.filter((x) => x.createdById === req.session.user.id);
 };
 
 /**

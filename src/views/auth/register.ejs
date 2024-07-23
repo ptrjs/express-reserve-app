@@ -1,35 +1,32 @@
 <%- include('../components/header') %>
 
-<div class="container">
-  <div>
-
-    <h1><%= message %></h1>
-
-    <h1 style="text-align: center;">Registrasi</h1>
-
-    <form method="post" action="register">
-      <p>
-        <label for="name">Name:</label>
-        <input type="text" name="name" required/>
-      </p>
-      <p>
-        <label for="email">Email:</label>
-        <input type="email" name="email" required/>
-      </p>
-      <p>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required/>
-      </p>
-      <p>
-        <label for="admin">Admin:</label>
-        <input type="checkbox" name="admin"/>
-      </p>
-      <p>
-        <input type="submit"/>
-      </p>
-    </form>
-
-    <p><a href="/auth/login">atau login</a></p>
+<div class="h-100 d-flex align-items-center justify-content-center">
+  <div class="d-flex flex-column gap-2">
+  <% if (message?.length) { %>
+    <p class="border border-danger p-2"><%= message %></p>
+  <% } %>
+    <div class="border border-dark p-5 m-auto">
+      <form method="post" action="register">
+      <h1 class="text-center">Regristrasi</h1>
+        <div class="form-group">
+          <label for="name">Nama</label>
+          <input class="form-control" type="text" name="name" required/>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input class="form-control" type="email" name="email" required/>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input class="form-control" type="password" name="password" required/>
+        </div>
+        <div class="form-group">
+          <label for="admin">Daftar sebagai admin</label>
+          <input type="checkbox" class="form-check-label" name="admin"/>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Regristrasi</button>
+    </div>
+    <p class="text-center border border-dark p-2"><span>Punya akun ? <span/><a class="text-decoration-none" href="/auth/login">Login</a></p>
   </div>
 </div>
 
