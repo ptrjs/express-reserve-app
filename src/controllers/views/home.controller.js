@@ -2,7 +2,7 @@ const fetch = require('../../utils/fetch');
 
 const createNavlist = (role) => {
   const navs = [{ name: 'home', path: '/home' }];
-  if (role === 'admin') navs.push({ name: 'user', path: '/user' }, { name: 'event', path: '/event' });
+  if (role === 'admin') navs.push({ name: 'event', path: '/event' });
   return navs.map((x) => `<a href="${x.path}">${x.name}</a>`);
 };
 
