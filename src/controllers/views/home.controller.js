@@ -18,7 +18,7 @@ const fetchEvents = async (req) => {
     },
   }).then((x) => x.json());
 
-  return response.data.map((x) => `<a href="reservation/${x.id}">${x.name}</a>`);
+  return response.data;
 };
 
 /**
@@ -34,9 +34,12 @@ const homePage = async (req, res) => {
     role = req.session.user.role;
   }
 
-  const events = await fetchEvents(req);
+  const events = await fetchEvents(req).catch(() => []);
 
-  return res.render('home/index', { username, navs: createNavlist(role), events });
+  const yourReservations = events.filter((x) => !!x.reservations.find((y) => y.userId === req.session.user.id));
+  const available = events.filter((x) => !yourReservations.find((y) => y.id === x.id) && x.quantity);
+
+  return res.render('home/index', { username, navs: createNavlist(role), yourReservations, available });
 };
 
 module.exports = {

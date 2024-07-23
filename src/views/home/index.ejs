@@ -1,9 +1,17 @@
 <%- include('../components/header') %>
 <%- include('../components/navbar', { navs }) %>
 <h1>Halo <%= username %></h1>
+<h2>Event yang bisa kamu ikuti !</h2>
 <ul>
-  <% events.forEach(x => { %>
-  <li><%- x %></li>
+  <% available.forEach(x => {%>
+  <li><a href="reservation/<%= x.id %>"><%= x.title %></a></li>
+  <% }); %>
+</ul>
+
+<h2>Event yang kamu ikuti!</h2>
+<ul>
+  <% yourReservations.forEach(x => { %>
+  <li><a href="reservation/<%= x.id %>"><%= x.title %></a></li>
   <% }); %>
 </ul>
 <form method="post" action="/auth/logout">

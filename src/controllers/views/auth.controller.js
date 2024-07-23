@@ -25,7 +25,7 @@ const loginForm = async (req, res) => {
 
   if (response.code) return res.render('auth/login.ejs', { message: response.message });
   req.session.token = response.tokens;
-  req.session.user = { name: response.user.name, role: response.user.role };
+  req.session.user = { name: response.user.name, role: response.user.role, id: response.user.id };
   return res.redirect('/home');
 };
 
@@ -58,7 +58,7 @@ const registerForm = async (req, res) => {
 
   if (response.code) return res.render('auth/register.ejs', { message: response.message });
   req.session.token = response.tokens;
-  req.session.user = { name: response.userCreated.name, role: response.userCreated.role };
+  req.session.user = { name: response.userCreated.name, role: response.userCreated.role, id: response.user.id };
   return res.redirect('/home');
 };
 
