@@ -171,6 +171,22 @@ const deleteManyReservations = async (ids) => {
   return deleteResult;
 };
 
+
+
+const createManyReservations = async (userId, eventIds) => {
+  const reservations = eventIds.map(eventId => ({
+    userId,
+    eventId,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }));
+
+  return await prisma.reservation.createMany({
+    data: reservations,
+  });
+};
+
+
 module.exports = {
   createReservation,
   queryReservations,
@@ -179,5 +195,6 @@ module.exports = {
   getAllReservation,
   updateReservationById,
   deleteReservationById,
-  deleteManyReservations
+  deleteManyReservations,
+  createManyReservations
 };

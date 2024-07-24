@@ -38,10 +38,18 @@ const deleteManyReservations = {
   }),
 };
 
+
+const createManyReservations = {
+  body: Joi.object().keys({
+    eventIds: Joi.array().items(Joi.string().custom(objectId)),
+  }),
+};
+
 module.exports = {
   createReservation,
   getReservation,
   updateReservation,
   deleteReservation,
-  deleteManyReservations
+  deleteManyReservations,
+  createManyReservations
 };
