@@ -21,6 +21,14 @@ router
   );
 
 router
+  .route('/reserve-many')
+  .post(
+    auth(),
+    validate(reservationValidation.createManyReservations),
+    reservationController.createManyReservations
+  );
+
+router
   .route('/:reservationId')
   .get(auth(), validate(reservationValidation.getReservation), reservationController.getReservation)
   .patch(auth(), validate(reservationValidation.updateReservation), reservationController.updateReservation)

@@ -71,6 +71,24 @@ const deleteManyReservations = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const createManyReservations = catchAsync(async (req, res) => {
+  const { eventIds } = req.body;
+  const userId = req.user.id;
+
+  if (!Array.isArray(eventIds) || eventIds.length === 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Event IDs must be a non-empty array');
+  }
+
+
+  const reservations = await reservationService.createManyReservations(userId, eventIds);
+
+  res.status(httpStatus.CREATED).send({
+    status: httpStatus.CREATED,
+    message: 'Reservations created successfully',
+    data: reservations,
+  });
+});
+
 
 module.exports = {
   createReservation,
@@ -78,5 +96,6 @@ module.exports = {
   getReservation,
   updateReservation,
   deleteReservation,
-  deleteManyReservations
+  deleteManyReservations,
+  createManyReservations
 };
