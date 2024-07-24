@@ -6,13 +6,14 @@
     <p class="border border-danger p-2"><%= message %></p>
   <% } %>
     <div class="border border-dark p-5 m-auto">
-    <%- formMethod %>
-      <h1 class="text-center">Masukan kata sandi baru !</h1>
+      <form method="post" action="register?admin=">
+      <h1 class="text-center">Masukan kata sandi untuk menjadi admin</h1>
         <div class="form-group">
           <label for="password">Password</label>
           <input class="form-control" type="password" name="password" required/>
         </div>
-        <button type="submit" class="btn btn-primary w-100">ubah kata sandi</button>
+        <button type="submit" class="btn btn-primary w-100">Regristasi</button>
+      </form>
     </div>
   </div>
 </div>

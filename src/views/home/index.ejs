@@ -1,20 +1,61 @@
 <%- include('../components/header') %>
-<%- include('../components/navbar', { navs }) %>
-<h1>Halo <%= username %></h1>
-<h2>Event yang bisa kamu ikuti !</h2>
-<ul>
-  <% available.forEach(x => {%>
-  <li><a href="reservation/<%= x.id %>"><%= x.title %></a></li>
-  <% }); %>
-</ul>
+<%- include('../components/navbar', { navs, on: '/home' }) %>
 
-<h2>Event yang kamu ikuti!</h2>
-<ul>
-  <% yourReservations.forEach(x => { %>
-  <li><a href="reservation/<%= x.id %>"><%= x.title %></a></li>
-  <% }); %>
-</ul>
-<form method="post" action="/auth/logout">
-  <input type="submit" value="log out"/>
-</form>
+<div class="d-flex p-2">
+  <div class="d-flex flex-column gap-2">
+    <h1 class="border border-dark p-2">Halo <small class="text-body-secondary"><%= username %></small></h1>
+    <div class="text-center p-2 border border-dark">
+      <% if (on === 'reservation') { %>
+        <a href="/home" class="btn btn-outline-success w-auto">Event</a>
+        <a href="/home?on=reservation" class="btn btn-warning w-50">Telah diikuti</a>
+      <% } else { %>
+        <a href="/home" class="btn btn-success w-50">Event</a>
+        <a href="/home?on=reservation" class="btn btn-outline-warning w-auto">Telah diikuti</a>
+      <% } %>
+    </div>
+    <table class="table border border-dark">
+      <thead>
+        <tr class="text-center">
+          <th scope="col">No</th>
+          <th scope="col">Judul</th>
+          <th scope="col">Slot</th>
+          <th scope="col">Operasi</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+      <% events.forEach((x, i) => { %>
+        <% const reservationId = x.reservations.find(y => y.userId === user.id)?.id %>
+        <form method="post" action="/reservation/delete/<%= reservationId %>?redirect=/home?on=reservation" id="delete-<%= reservationId %>"></form>
+        <form method="post" action="/reservation/<%= x.id %>" id="create-<%= x.id %>"></form>
+        <tr class="text-center">
+          <th scope="row"><%= i + 1 %></th>
+          <td><a href="/reservation/<%= x.id %>" class="text-decoration-none"><%= x.title %></a></td>
+          <td><%= x.quantity %></td>
+          <td>
+            <% if (on === 'reservation') { %>
+            <a class="btn btn-outline-primary" href="/home?on=reservation&select=<%= i %>">lihat</a>
+            <button class="btn btn-outline-danger" type="submit" form="delete-<%= reservationId %>">delete</button>
+            <% } else { %>
+            <a class="btn btn-outline-primary" href="/home?select=<%= i %>">lihat</a>
+            <button class="btn btn-outline-success" type="submit" form="create-<%= x.id %>">ikuti</button>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% if (!isNaN(select) && events[select]) { %>
+  <div class="d-flex flex-column px-2">
+    <h2 class="border border-dark text-center p-2">Detail</h2>
+    <div class="border border-dark p-2">
+      <h1><%= events[select].title %></h1>
+      <p class="lead"><%= events[select].description %></p>
+      <h6>Mulai <small class="text-body-secondary"><%= format(events[select].startTime) %></small></h6>
+      <h6>Selesai <small class="text-body-secondary"><%= format(events[select].endTime) %></small></h6>
+    </div>
+  </div>
+  <% } %>
+</div>
+
 <%- include('../components/footer') %>

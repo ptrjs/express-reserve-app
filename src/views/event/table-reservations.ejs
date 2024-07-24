@@ -1,0 +1,41 @@
+<% if (select && events[select] && action === "select") { %>
+<div class="d-flex p-2">
+  <div class="d-flex flex-column gap-2">
+    <div class="d-flex flex-row border border-dark p-2">
+      <h2 class="me-auto">Peserta: <%= events[select].title %></h2>
+      <a href="/event?select=<%= select %>&print=" class="btn btn-outline-primary">print</a>
+    </div>
+    <% if (events[select].reservations.length) { %>
+    <table class="table border border-dark p-2">
+      <thead>
+        <tr class="text-center">
+          <th scope="col">NO</th>
+          <th scope="col">Nama Peserta</th>
+          <th scope="col">Email</th>
+          <th scope="col">Operasi</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% events[select].reservations.forEach((x, i) => { %>
+        <tr class="text-center">
+          <th scope="row"><%= i+1 %></th>
+          <td>
+            <%= x.User.name %>
+          </td>
+          <td>
+            <%= x.User.email %>
+          </td>
+          <td>
+            <form id="delete-reservation-<%= x.id %>" method="post" action="/reservation/delete/<%= x.id %>?redirect=/event?select=<%= select %>"></form>
+            <button class="btn btn-outline-danger" form="delete-reservation-<%= x.id %>">hapus</button>
+          </td>
+        </tr>
+      <% }); %>
+      </tbody>
+    </table>
+    <% } else { %>
+    <h2 class="border border-dark p-2">Waduh belum ada peserta nih!</h2>
+    <% } %>
+  </div>
+</div>
+<% } %>

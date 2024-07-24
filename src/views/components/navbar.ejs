@@ -1,7 +1,20 @@
-<div>
-  <ul>
-    <% navs.forEach(x => { %>
-      <li><%- x %></li>
-    <% }) %>
-  </ul>
-</div>
+<nav class="navbar navbar-expand border-bottom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Sistem Reservasi</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+      <% navs.forEach(x => { %>
+        <li class="nav-item">
+          <a class="nav-link <%= on === x.path ? 'active' : '' %>" href="<%= x.path %>" aria-current="<%= on === x.path ? 'page' : '' %>"><%= x.name %></a>
+        </li>
+      <% }) %>
+      </ul>
+    </div>
+    <form class="d-flex" method="post" action="/auth/logout">
+      <input class="btn btn-outline-danger" type="submit" value="log out"/>
+    </form>
+  </div>
+</nav>

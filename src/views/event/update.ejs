@@ -1,36 +1,39 @@
 <%- include('../components/header') %>
 
-<div class="container">
-  <div>
-    <h1><%= message %></h1>
-    <h1 style="text-align: center;">Buat Event</h1>
+<% const parseDate = (time) => new Date(time).toISOString().slice(0, new Date(time).toISOString().lastIndexOf(':')); %>
 
-    <form action="update?id=<%= id %>" method="post">
-      <p>
-        <label for="title">Judul:</label>
-        <input name="title" type="text" value="<%= body.title || '' %>"/>
-      </p>
-      <p>
-        <label for="description">Deskripsi:</label>
-        <input name="description" type="text" value="<%= body.description || '' %>"/>
-      </p>
-      <p>
-        <label for="startTime">Mulai:</label>
-        <input name="startTime" type="datetime-local" value="<%= body.startTime || '' %>"/>
-      </p>
-      <p>
-        <label for="endTime">Berakhir:</label>
-        <input name="endTime" type="datetime-local" value="<%= body.endTime || '' %>"/>
-      </p>
-      <p>
-        <label for="quantity">Kuantitas:</label>
-        <input name="quantity" min="0" type="number" value="<%= body.quantity || 1 %>"/>
-      </p>
-      <p>
-        <input type="submit" />
-      </p>
+<% if (action ==="update") { %>
+<div class="d-flex flex-column p-2">
+  <% if (message?.length) { %>
+  <p class="border border-danger p-2"><%= message %></p>
+  <% } %>
+  <div class="p-2 border border-dark">
+    <form action="update?id=<%= events[select].id %>" method="post">
+    <h1 class="text-center">Ubah Event</h1>
+      <div class="form-group">
+        <label for="title">Judul</label>
+        <input class="form-control" name="title" type="text" value="<%= events[select].title %>"/>
+      </div>
+      <div class="form-group">
+        <label for="description">Deskripsi</label>
+        <textarea class="form-control" name="description" type="text" rows="5"><%= events[select].description %></textarea>
+      </div>
+      <div class="form-group">
+        <label for="startTime">Mulai</label>
+        <input class="form-control" name="startTime" type="datetime-local" min="<%= parseDate(events[select].startTime) %>" value="<%= parseDate(events[select].startTime) %>"/>
+      </div>
+      <div class="form-group">
+        <label for="endTime">Berakhir</label>
+        <input class="form-control" name="endTime" type="datetime-local" min="<%= parseDate(events[select].startTime) %>" value="<%= parseDate(events[select].endTime) %>"/>
+      </div>
+      <div class="form-group">
+        <label for="quantity">Kuantitas</label>
+        <input class="form-control" name="quantity" type="number" min="0" value="<%= events[select].quantity %>"/>
+      </div>
+      <button class="form-control btn btn-outline-warning" type="submit">ubah</button>
     </form>
   </div>
 </div>
+<% } %>
 
 <%- include('../components/footer') %>

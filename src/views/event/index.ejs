@@ -1,12 +1,22 @@
 <%- include('../components/header') %>
-<%- include('../components/navbar', { navs }) %>
+<%- include('../components/navbar', { navs, on: '/event' }) %>
 
-<h1>Event</h1>
-<a href="/event/create">Create</a>
-<ul id="list">
-  <% events.forEach(x => { %>
-  <li><%- x %></li>
-  <% }) %>
-</ul>
-
+<div class="d-flex flex-row mb-3">
+  <div class="d-flex p-2">
+    <div class="d-flex flex-column gap-2">
+      <div class="border border-dark p-2">
+        <form action="/event/create">
+          <div class="d-flex mb-3">
+            <h1 class="me-auto">Event</h1>
+            <button class="btn btn-outline-success" type="submit">Buat +</button>
+          </div>
+        </form>
+      </div>
+      <%- include('./table-event', { events, select }) %>
+    </div>
+  </div>
+  <%- include('./create', { action }) %>
+  <%- include('./table-reservations', { action }) %>
+  <%- include('./update', { action, select }) %>
+</div>
 <%- include('../components/footer') %>
