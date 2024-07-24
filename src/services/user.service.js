@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
-const prisma = require('../../prisma/client');
+const prisma = require('../../prisma');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -32,12 +32,22 @@ const queryUsers = async () => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  return prisma.user.findFirst({
+  console.log(`Fetching user with id: ${id}`);
+  return prisma.user.findUnique({
     where: {
       id,
     },
   });
 };
+
+// const getUserById = async (id) => {
+//   console.log(`Fetching user with id: ${id}`);
+//   const user = await prisma.user.findUnique({ where: { id } });
+//   if (!user) {
+//     console.log(`User not found with id: ${id}`);
+//   }
+//   return user;
+// };
 
 /**
  * Get user by email

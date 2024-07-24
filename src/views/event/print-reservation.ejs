@@ -1,0 +1,33 @@
+<%- include('../components/header') %>
+<div class="d-flex w-100 justify-content-center p-2">
+  <div class="d-flex flex-column gap-2">
+  <h2 class="border border-dark p-2">Peserta: <%= event.title %></h2>
+    <% if (event.reservations.length) { %>
+    <table class="table border border-dark p-2">
+      <thead>
+        <tr class="text-center">
+          <th scope="col">NO</th>
+          <th scope="col">Nama Peserta</th>
+          <th scope="col">Email</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% event.reservations.forEach((x, i) => { %>
+        <tr class="text-center">
+          <th scope="row"><%= i+1 %></th>
+          <td>
+            <%= x.User.name %>
+          </td>
+          <td>
+            <%= x.User.email %>
+          </td>
+        </tr>
+      <% }); %>
+      </tbody>
+    </table>
+    <% } else { %>
+    <h2 class="border border-dark p-2">Waduh belum ada peserta nih!</h2>
+    <% } %>
+  </div>
+</div>
+<%- include('../components/footer') %>

@@ -1,3 +1,4 @@
+const config = require('../../config/config');
 const fetch = require('../../utils/fetch');
 
 /**
@@ -25,7 +26,7 @@ const loginForm = async (req, res) => {
 
   if (response.code) return res.render('auth/login.ejs', { message: response.message });
   req.session.token = response.tokens;
-  req.session.user = { name: response.user.name, role: response.user.role };
+  req.session.user = { name: response.user.name, role: response.user.role, id: response.user.id };
   return res.redirect('/home');
 };
 
@@ -34,7 +35,9 @@ const loginForm = async (req, res) => {
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  */
-const registerPage = (_, res) => {
+const registerPage = (req, res) => {
+  if (Reflect.has(req.query, 'admin') && Reflect.has(req.session, 'register'))
+    return res.render('auth/registerAsAdmin.ejs', { message: '' });
   res.render('auth/register.ejs', { message: '' });
 };
 
@@ -44,6 +47,22 @@ const registerPage = (_, res) => {
  * @param {import("express").Response} res
  */
 const registerForm = async (req, res) => {
+  if (Reflect.has(req.query, 'admin') && Reflect.has(req.session, 'register')) {
+    if (req.body.password !== config.admin.secret)
+      return res.render('auth/registerAsAdmin.ejs', { message: 'wrong password' });
+    req.session.register.role = 'admin';
+  } else {
+    delete req.session.register;
+  }
+  if ('admin' in req.body) {
+    req.session.register = req.body;
+    delete req.body.admin;
+    return res.redirect('/auth/register?admin=');
+  }
+  if (req.session.register) {
+    req.body = req.session.register;
+    delete req.session.register;
+  }
   const response = await fetch('/v1/auth/register', {
     headers: {
       'Content-Type': 'application/json',
@@ -54,7 +73,7 @@ const registerForm = async (req, res) => {
 
   if (response.code) return res.render('auth/register.ejs', { message: response.message });
   req.session.token = response.tokens;
-  req.session.user = { name: response.userCreated.name, role: response.userCreated.role };
+  req.session.user = { name: response.userCreated.name, role: response.userCreated.role, id: response.userCreated.id };
   return res.redirect('/home');
 };
 
@@ -133,6 +152,7 @@ const logoutForm = async (req, res) => {
   if (response.ok) {
     req.session.token = undefined;
     req.session.user = undefined;
+    req.session.events = undefined;
   }
   return res.redirect('/');
 };

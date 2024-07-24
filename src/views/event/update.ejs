@@ -1,0 +1,39 @@
+<%- include('../components/header') %>
+
+<% const parseDate = (time) => new Date(time).toISOString().slice(0, new Date(time).toISOString().lastIndexOf(':')); %>
+
+<% if (action ==="update") { %>
+<div class="d-flex flex-column p-2">
+  <% if (message?.length) { %>
+  <p class="border border-danger p-2"><%= message %></p>
+  <% } %>
+  <div class="p-2 border border-dark">
+    <form action="update?id=<%= events[select].id %>" method="post">
+    <h1 class="text-center">Ubah Event</h1>
+      <div class="form-group">
+        <label for="title">Judul</label>
+        <input class="form-control" name="title" type="text" value="<%= events[select].title %>"/>
+      </div>
+      <div class="form-group">
+        <label for="description">Deskripsi</label>
+        <textarea class="form-control" name="description" type="text" rows="5"><%= events[select].description %></textarea>
+      </div>
+      <div class="form-group">
+        <label for="startTime">Mulai</label>
+        <input class="form-control" name="startTime" type="datetime-local" min="<%= parseDate(events[select].startTime) %>" value="<%= parseDate(events[select].startTime) %>"/>
+      </div>
+      <div class="form-group">
+        <label for="endTime">Berakhir</label>
+        <input class="form-control" name="endTime" type="datetime-local" min="<%= parseDate(events[select].startTime) %>" value="<%= parseDate(events[select].endTime) %>"/>
+      </div>
+      <div class="form-group">
+        <label for="quantity">Kuantitas</label>
+        <input class="form-control" name="quantity" type="number" min="0" value="<%= events[select].quantity %>"/>
+      </div>
+      <button class="form-control btn btn-outline-warning" type="submit">ubah</button>
+    </form>
+  </div>
+</div>
+<% } %>
+
+<%- include('../components/footer') %>

@@ -10,25 +10,53 @@ datasource db {
   url      = env("DB_URL")
 }
 
+
 model User {
-  id        String    @id @default(uuid())
-  name      String
-  email     String?    @unique
-  password  String    
-  role      String    @default("user")
-  createdAt DateTime  @default(now())
-  updateAt  DateTime  @default(now())
-  isEmailVerified Boolean @default(false)
-  tokens    Token[]
+  id               String      @id @default(uuid())
+  name             String
+  email            String?     @unique
+  password         String
+  role             String      @default("user") // "admin" or "user"
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @default(now())
+  isEmailVerified  Boolean     @default(false)
+  tokens           Token[]
+  reservations     Reservation[]
+  createdEvents    Event[]     @relation("CreatedEvents")
 }
+
 model Token {
-  id        String    @id @default(uuid())
-  token     String    @db.VarChar(400)
-  userId    String    
-  User      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type      String
-  expires   DateTime
-  blacklisted Boolean @default(false)
-  createdAt DateTime  @default(now())
-  updateAt  DateTime  @default(now())
+  id               String      @id @default(uuid())
+  token            String      @db.VarChar(400)
+  userId           String
+  User             User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type             String
+  expires          DateTime
+  blacklisted      Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @default(now())
+}
+
+model Event {
+  id               String      @id @default(uuid())
+  title            String
+  description      String?
+  startTime        DateTime
+  endTime          DateTime
+  quantity         Int
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @default(now())
+  createdById      String
+  CreatedBy        User        @relation("CreatedEvents", fields: [createdById], references: [id], onDelete: Cascade)
+  reservations     Reservation[]
+}
+
+model Reservation {
+  id               String      @id @default(uuid())
+  userId           String
+  eventId          String
+  User             User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Event            Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @default(now())
 }

@@ -4,6 +4,6 @@ const sessionHandler = require('../../middlewares/session');
 
 const router = express.Router();
 
-router.get('/', sessionHandler.whenLogin, homeController.homePage);
+router.get('/', sessionHandler.whenLogin(), homeController.homePage);
 
 module.exports = router;
