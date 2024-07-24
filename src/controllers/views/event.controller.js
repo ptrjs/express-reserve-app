@@ -1,19 +1,15 @@
 const fetch = require('../../utils/fetch');
 const { createNavlist } = require('./home.controller');
 
-/**
- * @function fetchEvnts
- * @param {import("express").Request} req
- */
-const fetchEvents = async (req) => {
-  const response = await fetch('/v1/event', {
-    headers: {
-      'Content-Type': 'application-json',
-      Authorization: `Bearer ${req.session.token.access.token}`,
-    },
-  }).then((x) => x.json());
-
-  return response.data.filter((x) => x.createdById === req.session.user.id);
+const renderIndex = async (req, res, action = 'none', message = '', local = {}) => {
+  return res.render('event/index', {
+    navs: createNavlist(req.session.user.role),
+    events: await fetch.fetchMyEvents(req),
+    select: req.query.select,
+    action,
+    message,
+    local,
+  });
 };
 
 /**
@@ -22,8 +18,8 @@ const fetchEvents = async (req) => {
  * @param {import("express").Response} res
  */
 const eventPage = async (req, res) => {
-  const events = await fetchEvents(req);
-  return res.render('event/index', { navs: createNavlist(req.session.user.role), events, select: req.query.select });
+  const mode = req.query.select ? 'select' : '';
+  return renderIndex(req, res, mode);
 };
 
 /**
@@ -31,8 +27,8 @@ const eventPage = async (req, res) => {
  * @param {import("express").Request} req
  * @param {import("express").Response} res
  */
-const eventPageCreate = (req, res) => {
-  return res.render('event/create', { message: '' });
+const eventPageCreate = async (req, res) => {
+  return renderIndex(req, res, 'create');
 };
 
 /**
@@ -42,6 +38,8 @@ const eventPageCreate = (req, res) => {
  */
 const eventPageCreateForm = async (req, res) => {
   req.body.createdById = req.session.user.id;
+  req.body.startTime = new Date(req.body.startTime).toISOString();
+  req.body.endTime = new Date(req.body.endTime).toISOString();
   const response = await fetch('/v1/event/', {
     method: 'POST',
     headers: {
@@ -51,8 +49,8 @@ const eventPageCreateForm = async (req, res) => {
     body: JSON.stringify(req.body),
   }).then((x) => x.json());
 
-  if (response.code) return res.render('event/create', { message: response.message });
-  res.redirect('/event');
+  if (response.code) return renderIndex(req, res, 'create', response.message);
+  return res.redirect('/event');
 };
 
 /**
@@ -61,20 +59,17 @@ const eventPageCreateForm = async (req, res) => {
  * @param {import("express").Response} res
  */
 const eventPageUpdate = async (req, res) => {
-  const { id } = req.query;
-  if (!id) return res.redirect('/event');
-  const response = await fetch(`/v1/event/${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${req.session.token.access.token}`,
-    },
-  }).then((x) => x.json());
+  if (!req.query.select) return res.redirect('/event');
 
-  response.data.startTime = new Date(response.data.startTime);
-  response.data.endTIme = new Date(response.data.endTime);
+  // response.data.startTime = new Date(response.data.startTime)
+  //   .toISOString()
+  //   .slice(0, new Date(response.data.startTime).toISOString().lastIndexOf(':'));
+  //
+  // response.data.endTIme = new Date(response.data.endTime)
+  //   .toISOString()
+  //   .slice(0, new Date(response.data.endTime).toISOString().lastIndexOf(':'));
 
-  return res.render('event/update', { message: '', body: response.data, id });
+  return renderIndex(req, res, 'update', '');
 };
 
 /**
@@ -96,7 +91,8 @@ const eventPageUpdateForm = async (req, res) => {
     body: JSON.stringify(req.body),
   }).then((x) => x.json());
 
-  if (response.code) return res.render('event/create', { message: response.message, body: req.body || {}, id });
+  if (response.code) return renderIndex(req, res, 'update', response.message, { id, body: req.body });
+
   res.redirect('/event/update');
 };
 
@@ -107,7 +103,7 @@ const eventPageUpdateForm = async (req, res) => {
  */
 const eventDeleteForm = async (req, res) => {
   const { id } = req.query;
-  if (id)
+  if (id) {
     await fetch(`/v1/event/${id}`, {
       method: 'DELETE',
       headers: {
@@ -115,6 +111,7 @@ const eventDeleteForm = async (req, res) => {
         Authorization: `Bearer ${req.session.token.access.token}`,
       },
     });
+  }
   return res.redirect('/event');
 };
 

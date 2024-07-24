@@ -1,36 +1,37 @@
 <%- include('../components/header') %>
 
-<div class="container">
-  <div>
-    <h1><%= message %></h1>
-    <h1 style="text-align: center;">Buat Event</h1>
-
+<% if (action ==="create") { %>
+<div class="d-flex flex-column p-2">
+  <% if (message?.length) { %>
+  <p class="border border-danger p-2"><%= message %></p>
+  <% } %>
+  <div class="p-2 border border-dark">
     <form action="create" method="post">
-      <p>
-        <label for="title">Judul:</label>
-        <input name="title" type="text" required/>
-      </p>
-      <p>
-        <label for="description">Deskripsi:</label>
-        <input name="description" type="text" required/>
-      </p>
-      <p>
-        <label for="startTime">Mulai:</label>
-        <input name="startTime" type="datetime-local" required/>
-      </p>
-      <p>
-        <label for="endTime">Berakhir:</label>
-        <input name="endTime" type="datetime-local" required/>
-      </p>
-      <p>
-        <label for="quantity">Kuantitas:</label>
-        <input name="quantity" type="number" min="0" required/>
-      </p>
-      <p>
-        <input type="submit" />
-      </p>
+    <h1 class="text-center">Buat Event</h1>
+      <div class="form-group">
+        <label for="title">Judul</label>
+        <input class="form-control" name="title" type="text" required/>
+      </div>
+      <div class="form-group">
+        <label for="description">Deskripsi</label>
+        <textarea class="form-control" name="description" type="text" rows="5" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="startTime">Mulai</label>
+        <input class="form-control" name="startTime" type="datetime-local" min="<%= new Date().toISOString().slice(0,new Date().toISOString().lastIndexOf(':')) %>" required/>
+      </div>
+      <div class="form-group">
+        <label for="endTime">Berakhir</label>
+        <input class="form-control" name="endTime" type="datetime-local" min="<%= new Date().toISOString().slice(0,new Date().toISOString().lastIndexOf(':')) %>" required/>
+      </div>
+      <div class="form-group">
+        <label for="quantity">Kuantitas</label>
+        <input class="form-control" name="quantity" type="number" min="0" required/>
+      </div>
+      <button class="form-control btn btn-outline-success" type="submit">buat</button>
     </form>
   </div>
 </div>
+<% } %>
 
 <%- include('../components/footer') %>

@@ -8,3 +8,20 @@ const config = require('../config/config');
 module.exports = async function (path, init) {
   return fetch(config.server.url + path, init);
 };
+
+/**
+ * @function fetchEvents
+ * @param {import("express").Request} req
+ */
+module.exports.fetchMyEvents = async (req) => {
+  const response = await module
+    .exports('/v1/event', {
+      headers: {
+        'Content-Type': 'application-json',
+        Authorization: `Bearer ${req.session.token.access.token}`,
+      },
+    })
+    .then((x) => x.json());
+
+  return response.data.filter((x) => x.createdById === req.session.user.id);
+};

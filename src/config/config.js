@@ -24,6 +24,7 @@ const envVarsSchema = Joi.object()
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     SERVER_URL: Joi.string().description('server url'),
+    SECRET_ADMIN_PASS: Joi.string().description('use to register as admin'),
   })
   .unknown();
 
@@ -58,4 +59,5 @@ module.exports = {
     from: envVars.EMAIL_FROM,
   },
   server: { url: envVars.SERVER_URL || `http://localhost:${envVars.PORT}` },
+  admin: { secret: envVars.SECRET_ADMIN_PASS },
 };
