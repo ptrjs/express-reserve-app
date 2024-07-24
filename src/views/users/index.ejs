@@ -1,9 +1,8 @@
 <%- include('../components/header') %>
-<%- include('../components/navbar', { navs, on: '/home' }) %>
+<%- include('../components/navbar', { navs, on: '/user' }) %>
 
 <div class="d-flex p-2">
   <div class="d-flex flex-column gap-2">
-    <h1 class="border border-dark p-2">Halo <small class="text-body-secondary"><%= username %></small></h1>
     <div class="text-center p-2 border border-dark">
       <% if (on === 'reservation') { %>
         <a href="/home" class="btn btn-outline-success w-auto">Event</a>

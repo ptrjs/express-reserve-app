@@ -1,3 +1,4 @@
+const moment = require('moment');
 const fetch = require('../../utils/fetch');
 const { createNavlist } = require('./home.controller');
 
@@ -9,6 +10,7 @@ const renderIndex = async (req, res, action = 'none', message = '', local = {}) 
     action,
     message,
     local,
+    parseDate: (date) => moment(date).format('YYYY-MM-DDThh:mm'),
   });
 };
 
