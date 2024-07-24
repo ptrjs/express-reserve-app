@@ -1,7 +1,10 @@
 <% if (select && events[select] && action === "select") { %>
 <div class="d-flex p-2">
   <div class="d-flex flex-column gap-2">
-    <h2 class="border border-dark p-2">Peserta: <%= events[select].title %></h2>
+    <div class="d-flex flex-row border border-dark p-2">
+      <h2 class="me-auto">Peserta: <%= events[select].title %></h2>
+      <a href="/event?select=<%= select %>&print=" class="btn btn-outline-primary">print</a>
+    </div>
     <% if (events[select].reservations.length) { %>
     <table class="table border border-dark p-2">
       <thead>

@@ -19,6 +19,11 @@ const renderIndex = async (req, res, action = 'none', message = '', local = {}) 
  */
 const eventPage = async (req, res) => {
   const mode = req.query.select ? 'select' : '';
+  if (Reflect.has(req.query, 'print') && req.query.select) {
+    const events = await fetch.fetchMyEvents(req);
+    const event = events[req.query.select];
+    if (event) return res.render('event/print-reservation', { event });
+  }
   return renderIndex(req, res, mode);
 };
 

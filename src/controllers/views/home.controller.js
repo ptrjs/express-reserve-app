@@ -1,3 +1,4 @@
+const moment = require('moment');
 const fetch = require('../../utils/fetch');
 
 const createNavlist = (role) => {
@@ -34,12 +35,23 @@ const homePage = async (req, res) => {
     role = req.session.user.role;
   }
 
-  const events = await fetchEvents(req).catch(() => []);
+  let events = await fetchEvents(req).catch(() => []);
 
-  const yourReservations = events.filter((x) => !!x.reservations.find((y) => y.userId === req.session.user.id));
-  const available = events.filter((x) => !yourReservations.find((y) => y.id === x.id) && x.quantity);
+  if (req.query.on === 'reservation')
+    events = events.filter((x) => !!x.reservations.find((y) => y.userId === req.session.user.id));
+  else events = events.filter((x) => x.quantity && !x.reservations.find((y) => y.userId === req.session.user.id));
 
-  return res.render('home/index', { username, navs: createNavlist(role), yourReservations, available });
+  const format = (date) => moment(date).format('MMMM Do YYYY, h:mm:ss a');
+
+  return res.render('home/index', {
+    username,
+    navs: createNavlist(role),
+    events,
+    on: req.query.on,
+    user: req.session.user,
+    format,
+    select: req.query.select,
+  });
 };
 
 module.exports = {
