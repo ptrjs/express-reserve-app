@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { UNAUTHORIZED } = require('http-status');
 const fetch = require('../../utils/fetch');
 
 const createNavlist = (role) => {
@@ -19,6 +20,8 @@ const fetchEvents = async (req) => {
     },
   }).then((x) => x.json());
 
+  if (response.code) return response;
+
   return response.data;
 };
 
@@ -35,7 +38,13 @@ const homePage = async (req, res) => {
     role = req.session.user.role;
   }
 
-  let events = await fetchEvents(req).catch(() => []);
+  let events = await fetchEvents(req);
+
+  if (events.code === UNAUTHORIZED) {
+    req.session.token = undefined;
+    req.session.user = undefined;
+    return res.redirect('/');
+  }
 
   if (req.query.on === 'reservation')
     events = events.filter((x) => !!x.reservations.find((y) => y.userId === req.session.user.id));
