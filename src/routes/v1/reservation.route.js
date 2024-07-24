@@ -13,6 +13,14 @@ router
   .get(auth(), reservationController.getReservations);
 
 router
+  .route('/delete-many')
+  .delete(
+    auth(),
+    validate(reservationValidation.deleteManyReservations),
+    reservationController.deleteManyReservations
+  );
+
+router
   .route('/:reservationId')
   .get(auth(), validate(reservationValidation.getReservation), reservationController.getReservation)
   .patch(auth(), validate(reservationValidation.updateReservation), reservationController.updateReservation)

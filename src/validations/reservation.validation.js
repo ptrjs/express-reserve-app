@@ -32,9 +32,16 @@ const deleteReservation = {
   }),
 };
 
+const deleteManyReservations = {
+  body: Joi.object().keys({
+    ids: Joi.array().items(Joi.string().custom(objectId)),
+  }),
+};
+
 module.exports = {
   createReservation,
   getReservation,
   updateReservation,
   deleteReservation,
+  deleteManyReservations
 };

@@ -14,15 +14,22 @@ const createReservation = catchAsync(async (req, res) => {
 });
 
 const getReservations = catchAsync(async (req, res) => {
-  const { skip, take } = req.query;
-  const result = await reservationService.getAllReservation(skip, take);
+  const { skip = 0, take = 10 } = req.query;
+  const totalReservations = await reservationService.getReservationCount();
+  const result = await reservationService.getAllReservation(parseInt(skip), parseInt(take));
+
+  const page = Math.floor(parseInt(skip) / parseInt(take)) + 1;
+  const totalPages = Math.ceil(totalReservations / parseInt(take));
 
   res.status(httpStatus.OK).send({
-    status: httpStatus.OK,
-    message: 'Get Reservations Success',
-    data: result,
+    results: result,
+    page: page,
+    limit: parseInt(take),
+    totalPages: totalPages,
+    totalResults: totalReservations,
   });
 });
+
 
 const getReservation = catchAsync(async (req, res) => {
   const reservation = await reservationService.getReservationById(req.params.reservationId);
@@ -57,10 +64,19 @@ const deleteReservation = catchAsync(async (req, res) => {
   });
 });
 
+const deleteManyReservations = catchAsync(async (req, res) => {
+  const { ids } = req.body;
+  await reservationService.deleteManyReservations(ids);
+
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
+
 module.exports = {
   createReservation,
   getReservations,
   getReservation,
   updateReservation,
   deleteReservation,
+  deleteManyReservations
 };
