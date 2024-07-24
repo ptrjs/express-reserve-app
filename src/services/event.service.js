@@ -104,6 +104,20 @@ const getEventCount = async () => {
   return count;
 };
 
+const deleteManyEvents = async (ids) => {
+  if (!Array.isArray(ids) || ids.length === 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'IDs must be a non-empty array');
+  }
+
+  const deleteResult = await prisma.event.deleteMany({
+      where: {
+        id: { in: ids },
+      },
+  });
+
+  return deleteResult;
+};
+
 module.exports = {
   createEvent,
   queryEvents,
@@ -112,4 +126,5 @@ module.exports = {
   getAllEvent,
   updateEventById,
   deleteEventById,
+  deleteManyEvents
 };

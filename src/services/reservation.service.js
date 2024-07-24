@@ -157,6 +157,20 @@ const getReservationCount = async () => {
   return count;
 };
 
+const deleteManyReservations = async (ids) => {
+  if (!Array.isArray(ids) || ids.length === 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'IDs must be a non-empty array');
+  }
+
+  const deleteResult = await prisma.reservation.deleteMany({
+      where: {
+        id: { in: ids },
+      },
+  });
+
+  return deleteResult;
+};
+
 module.exports = {
   createReservation,
   queryReservations,
@@ -165,4 +179,5 @@ module.exports = {
   getAllReservation,
   updateReservationById,
   deleteReservationById,
+  deleteManyReservations
 };
