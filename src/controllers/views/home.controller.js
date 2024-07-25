@@ -22,7 +22,7 @@ const fetchEvents = async (req) => {
 
   if (response.code) return response;
 
-  return response.data;
+  return response.results;
 };
 
 /**

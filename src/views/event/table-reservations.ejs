@@ -1,4 +1,7 @@
 <% if (select && events[select] && action === "select") { %>
+
+<form id="delete-reservation-many" action="/reservation/delete/all?redirect=/event?select=<%= select %>" method="post"></form>
+
 <div class="d-flex p-2">
   <div class="d-flex flex-column gap-2">
     <div class="d-flex flex-row border border-dark p-2">
@@ -9,7 +12,7 @@
     <table class="table border border-dark p-2">
       <thead>
         <tr class="text-center">
-          <th scope="col">NO</th>
+          <th scope="col"><button form="delete-reservation-many" type="submit" class="btn btn-outline-danger">Del</button></th>
           <th scope="col">Nama Peserta</th>
           <th scope="col">Email</th>
           <th scope="col">Operasi</th>
@@ -18,7 +21,7 @@
       <tbody class="table-group-divider">
         <% events[select].reservations.forEach((x, i) => { %>
         <tr class="text-center">
-          <th scope="row"><%= i+1 %></th>
+          <th scope="row"><input form="delete-reservation-many" type="checkbox" class="form-check-input" value="<%= x.id %>" name="<%= i %>"></th>
           <td>
             <%= x.User.name %>
           </td>

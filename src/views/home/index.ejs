@@ -1,6 +1,9 @@
 <%- include('../components/header') %>
 <%- include('../components/navbar', { navs, on: '/home' }) %>
 
+<form id="delete-reservation-many" action="/reservation/delete/all?redirect=/home?on=<%= on %>" method="post"></form>
+<form id="create-reservation-many" action="/reservation/all" method="post"></form>
+
 <div class="d-flex p-2">
   <div class="d-flex flex-column gap-2">
     <h1 class="border border-dark p-2">Halo <small class="text-body-secondary"><%= username %></small></h1>
@@ -16,7 +19,13 @@
     <table class="table border border-dark">
       <thead>
         <tr class="text-center">
-          <th scope="col">No</th>
+          <th scope="col">
+          <% if (on === 'reservation') { %>
+            <button form="delete-reservation-many" class="btn btn-outline-danger" type="submit">batal</button>
+          <% } else { %>
+            <button form="create-reservation-many" class="btn btn-outline-success" type="submit">ikuti</button>
+          <% } %>
+          </th>
           <th scope="col">Judul</th>
           <th scope="col">Slot</th>
           <th scope="col">Operasi</th>
@@ -28,13 +37,19 @@
         <form method="post" action="/reservation/delete/<%= reservationId %>?redirect=/home?on=reservation" id="delete-<%= reservationId %>"></form>
         <form method="post" action="/reservation/<%= x.id %>" id="create-<%= x.id %>"></form>
         <tr class="text-center">
-          <th scope="row"><%= i + 1 %></th>
+          <th scope="row">
+          <% if (on === 'reservation') { %>
+            <input form="delete-reservation-many" class="form-check-input" type="checkbox" value="<%= reservationId %>" name="<%= i %>">
+          <% } else { %>
+            <input form="create-reservation-many" class="form-check-input" type="checkbox" value="<%= x.id %>" name="<%= i %>">
+          <% } %>
+          </th>
           <td><a href="/reservation/<%= x.id %>" class="text-decoration-none"><%= x.title %></a></td>
           <td><%= x.quantity %></td>
           <td>
             <% if (on === 'reservation') { %>
             <a class="btn btn-outline-primary" href="/home?on=reservation&select=<%= i %>">lihat</a>
-            <button class="btn btn-outline-danger" type="submit" form="delete-<%= reservationId %>">delete</button>
+            <button class="btn btn-outline-danger" type="submit" form="delete-<%= reservationId %>">batal</button>
             <% } else { %>
             <a class="btn btn-outline-primary" href="/home?select=<%= i %>">lihat</a>
             <button class="btn btn-outline-success" type="submit" form="create-<%= x.id %>">ikuti</button>
