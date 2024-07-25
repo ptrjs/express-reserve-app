@@ -14,17 +14,17 @@ const createReservation = catchAsync(async (req, res) => {
 });
 
 const getReservations = catchAsync(async (req, res) => {
-  const { skip = 0, take = 10 } = req.query;
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (parseInt(page) - 1) * parseInt(limit);
   const totalReservations = await reservationService.getReservationCount();
-  const result = await reservationService.getAllReservation(parseInt(skip), parseInt(take));
+  const result = await reservationService.getAllReservation(parseInt(page), parseInt(limit));
 
-  const page = Math.floor(parseInt(skip) / parseInt(take)) + 1;
-  const totalPages = Math.ceil(totalReservations / parseInt(take));
+  const totalPages = Math.ceil(totalReservations / parseInt(limit));
 
   res.status(httpStatus.OK).send({
     results: result,
-    page: page,
-    limit: parseInt(take),
+    page: parseInt(page),
+    limit: parseInt(limit),
     totalPages: totalPages,
     totalResults: totalReservations,
   });
