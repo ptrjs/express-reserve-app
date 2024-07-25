@@ -5,7 +5,7 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 
 const isExpire = (isostring) => {
-  return moment().isSameOrAfter(isostring, 'hours');
+  return moment(Date.now()).isSameOrAfter(isostring, 'minutes');
 };
 
 /**
