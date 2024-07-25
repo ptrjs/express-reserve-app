@@ -40,9 +40,17 @@ const deleteEvent = {
   }),
 };
 
+const deleteManyEvents = {
+  body: Joi.object().keys({
+    ids: Joi.array().items(Joi.string().custom(objectId)),
+  }),
+};
+
+
 module.exports = {
   createEvent,
   getEvent,
   updateEvent,
   deleteEvent,
+  deleteManyEvents
 };

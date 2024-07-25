@@ -45,17 +45,29 @@ const reservationPageCreate = async (req, res) => {
  */
 const reservationPageCreateForm = async (req, res) => {
   const { eventId } = req.params;
-  await fetch(`/v1/reservation`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${req.session.token.access.token}`,
-    },
-    body: JSON.stringify({
-      userId: req.session.user.id,
-      eventId,
-    }),
-  });
+  if (eventId === 'all') {
+    const eventIds = Object.values(req.body);
+    await fetch(`/v1/reservation/reserve-many`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.session.token.access.token}`,
+      },
+      body: JSON.stringify({ eventIds }),
+    });
+  } else {
+    await fetch(`/v1/reservation`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.session.token.access.token}`,
+      },
+      body: JSON.stringify({
+        userId: req.session.user.id,
+        eventId,
+      }),
+    });
+  }
   res.redirect('/home');
 };
 
@@ -86,13 +98,25 @@ const reservationPageUpdateForm = (req, res) => {
  */
 const reservationDeleteForm = async (req, res) => {
   const { reservationId } = req.params;
-  await fetch(`/v1/reservation/${reservationId}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${req.session.token.access.token}`,
-    },
-  });
+  if (reservationId === 'all') {
+    const ids = Object.values(req.body);
+    await fetch('/v1/reservation/delete-many', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.session.token.access.token}`,
+      },
+      body: JSON.stringify({ ids }),
+    });
+  } else {
+    await fetch(`/v1/reservation/${reservationId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.session.token.access.token}`,
+      },
+    });
+  }
   return res.redirect(req.query.redirect || '/home');
 };
 

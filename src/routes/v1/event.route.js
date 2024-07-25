@@ -17,6 +17,15 @@ router
   )
   .get(auth(), eventController.getEvents);
 
+
+router
+.route('/delete-many')
+.delete(
+  adminAuth(),
+  validate(eventValidation.deleteManyEvents),
+  eventController.deleteManyEvents
+);
+
 router
   .route('/:eventId')
   .get(auth(), validate(eventValidation.getEvent), eventController.getEvent)

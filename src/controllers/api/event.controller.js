@@ -12,17 +12,23 @@ const createEvent = catchAsync(async (req, res) => {
     data: event,
   });
 });
-
 const getEvents = catchAsync(async (req, res) => {
-  const { skip, take } = req.query;
-  const result = await eventService.getAllEvent(skip, take);
+  const { skip = 0, take = 10 } = req.query;
+  const totalEvents = await eventService.getEventCount();
+  const result = await eventService.getAllEvent(parseInt(skip), parseInt(take));
+
+  const page = Math.floor(parseInt(skip) / parseInt(take)) + 1;
+  const totalPages = Math.ceil(totalEvents / parseInt(take));
 
   res.status(httpStatus.OK).send({
-    status: httpStatus.OK,
-    message: 'Get Events Success',
-    data: result,
+    results: result,
+    page: page,
+    limit: parseInt(take),
+    totalPages: totalPages,
+    totalResults: totalEvents,
   });
 });
+
 
 const getEvent = catchAsync(async (req, res) => {
   const event = await eventService.getEventById(req.params.eventId);
@@ -57,10 +63,19 @@ const deleteEvent = catchAsync(async (req, res) => {
   });
 });
 
+const deleteManyEvents = catchAsync(async (req, res) => {
+  const { ids } = req.body;
+  await eventService.deleteManyEvents(ids);
+
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
+
 module.exports = {
   createEvent,
   getEvents,
   getEvent,
   updateEvent,
   deleteEvent,
+  deleteManyEvents
 };
