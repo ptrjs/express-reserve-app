@@ -144,10 +144,13 @@ const deleteReservationById = async (reservationId) => {
   });
 };
 
-const getAllReservation = async (skip = 0, take = 10) => {
+const getAllReservation = async (page = 1, limit = 10) => {
+  const skip = (page - 1) * limit;
+
+
   const reservations = await prisma.reservation.findMany({
     skip: parseInt(skip),
-    take: parseInt(take),
+    take: parseInt(limit),
   });
   return reservations;
 };
