@@ -1,8 +1,11 @@
 <% if (events.length) { %>
+
+<form id="delete-event-many" action="/event/delete?id=all" method="post"></form>
+
 <table class="table border border-dark p-2">
   <thead>
     <tr class="text-center">
-      <th scope="col">NO</th>
+      <th scope="col"><button form="delete-event-many" class="btn btn-outline-danger" type="submit">Del</button></th>
       <th scope="col">Nama</th>
       <th scope="col">Operasi</th>
     </tr>
@@ -10,7 +13,7 @@
   <tbody class="table-group-divider">
   <% events.forEach((x, i) => { %>
     <tr class="text-center">
-      <th scope="row"><%= i+1 %></th>
+      <th scope="row"><input form="delete-event-many" type="checkbox" name="<%= i %>" class="form-check-input" value="<%= x.id %>"></th>
       <td>
         <a class="text-decoration-none" href="/reservation/<%= x.id %>"><%= x.title %></a>
       </td>

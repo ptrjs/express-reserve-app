@@ -23,5 +23,5 @@ module.exports.fetchMyEvents = async (req) => {
     })
     .then((x) => x.json());
 
-  return response.data.filter((x) => x.createdById === req.session.user.id);
+  return response.results.filter((x) => x.createdById === req.session.user.id);
 };

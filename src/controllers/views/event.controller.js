@@ -108,7 +108,17 @@ const eventPageUpdateForm = async (req, res) => {
  */
 const eventDeleteForm = async (req, res) => {
   const { id } = req.query;
-  if (id) {
+  if (id === 'all') {
+    const ids = Object.values(req.body);
+    await fetch(`/v1/event/delete-many`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.session.token.access.token}`,
+      },
+      body: JSON.stringify({ ids }),
+    });
+  } else if (id) {
     await fetch(`/v1/event/${id}`, {
       method: 'DELETE',
       headers: {
