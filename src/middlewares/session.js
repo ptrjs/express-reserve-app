@@ -1,12 +1,11 @@
 const { NOT_FOUND } = require('http-status');
+const moment = require('moment');
 const fetch = require('../utils/fetch');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 
 const isExpire = (isostring) => {
-  const now = new Date();
-  const expireDate = new Date(isostring);
-  return now >= expireDate;
+  return moment().isSameOrAfter(isostring, 'hours');
 };
 
 /**
