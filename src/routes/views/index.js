@@ -3,6 +3,7 @@ const authRoute = require('./auth.route');
 const homeRoute = require('./home.route');
 const eventRoute = require('./event.route');
 const reservationRoute = require('./reservation.route');
+const usersRoute = require('./users.route');
 
 const routes = [
   {
@@ -20,6 +21,10 @@ const routes = [
   {
     path: '/reservation',
     route: reservationRoute,
+  },
+  {
+    path: '/users',
+    route: usersRoute,
   },
 ];
 

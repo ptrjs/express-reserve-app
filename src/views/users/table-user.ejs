@@ -1,0 +1,34 @@
+<% if (method === 'none') { %>
+<table class="table border border-dark">
+  <thead>
+    <tr class="text-center">
+      <th scope="col">No</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Password</th>
+      <th scope="col">Role</th>
+      <th scope="col"><a class="btn btn-outline-primary btn-sm" href="/users?method=create">tambah +</a></th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+  <% users.forEach((x, i) => { %>
+    <form id="update-<%= x.id %>" method="post" action="/users/update/<%= x.id %>"></form>
+    <form id="delete-<%= x.id %>" method="post" action="/users/delete/<%= x.id %>"></form>
+    <input form="update-<%= x.id %>" class="form-control" type="hidden" name="emailBefore" value="<%= x.email %>">
+    <tr class="text-center">
+      <th scope="row"><%= i + 1 %></th>
+      <td><input form="update-<%= x.id %>" class="form-control" type="text" name="name" value="<%= x.name %>"></td>
+      <td><input form="update-<%= x.id %>" class="form-control" type="email" name="email" value="<%= x.email %>"></td>
+      <td><input form="update-<%= x.id %>" class="form-control" type="password" name="password"></td>
+      <td class="<%= x.role === 'admin' ? 'text-danger' : 'text-info' %>"><%= x.role %></td>
+      <td>
+        <div class="d-grid gap-2 d-md-block">
+          <button form="update-<%= x.id %>" type="submit" class="btn btn-outline-warning btn-sm">ubah</button>
+          <button form="delete-<%= x.id %>" type="submit" class="btn btn-outline-danger btn-sm">hapus</button>
+        </div>
+      </td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
+<% } %>

@@ -1,0 +1,19 @@
+<%- include('../components/header') %>
+<%- include('../components/navbar', { navs, on: '/users' }) %>
+
+<div class="container p-2">
+  <div class="d-flex flex-column gap-2">
+    <div class="d-flex flex-row gap-2">
+      <h1 class="border border-dark px-2">User <small class="text-body-secondary">Panel</small></h1>
+      <h1 class="border border-dark text-danger px-2">Be careful!</h1>
+      <% if (local?.fail) { %>
+      <h4 class="border border-dark p-2 text-center text-danger"><%= local.fail.message %></h4>
+      <% } %>
+    </div>
+    <%- include('./table-user', { users, method, select }); %>
+    <%- include('./create', { users, method, select }); %>
+    <%- include('./confirmation', { local, navs }); %>
+  </div>
+</div>
+
+<%- include('../components/footer') %>

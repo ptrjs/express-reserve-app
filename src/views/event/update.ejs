@@ -1,7 +1,5 @@
 <%- include('../components/header') %>
 
-<% const parseDate = (time) => new Date(time).toISOString().slice(0, new Date(time).toISOString().lastIndexOf(':')); %>
-
 <% if (action ==="update") { %>
 <div class="d-flex flex-column p-2">
   <% if (message?.length) { %>

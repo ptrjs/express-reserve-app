@@ -1,0 +1,21 @@
+<% if (local?.confirmation) { %>
+<div class="fixed-top w-100 h-100">
+<%- include('../components/navbar', { navs, on: '/users' }) %>
+  <div class="d-flex justify-content-center align-items-center p-2">
+    <div class="d-flex bg-light border border-danger p-2">
+      <form method="post" action="<% local.confirmation.url %>">
+        <h1 class="text-center">Yakin nih?</h1>
+        <h6 class="text-center"><%= local?.confirmation.message %></h6>
+        <div class="form-group">
+          <input type="password" class="form-control" name="confirmationPassword">
+          <% for (const k in (local.confirmation.body ?? {})) { %>
+          <input type="hidden" name="<%= k %>" value="<%= local.confirmation.body[k] %>">
+          <% } %>
+          <input type="submit" class="btn btn-outline-danger w-100" value="lakukan">
+          <a href="/users" class="btn btn-outline-success w-100">tidak</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<% } %>
