@@ -145,7 +145,11 @@ const getEventsByUserId = async (userId, page = 1, limit = 10) => {
     where: { userId },
   });
 
-  const events = userEvents.map(reservation => reservation.Event);
+    const events = userEvents.map(reservation => ({
+      ...reservation.Event,
+      reservationId: reservation.id
+    })
+  );
 
   return {
     events,
