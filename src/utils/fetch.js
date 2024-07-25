@@ -30,7 +30,7 @@ module.exports.fetchMyEvents = async (req) => {
  * @function fetchUsers
  * @param {import("express").Request} req
  */
-module.exports.fetchUsers = async (req, page) => {
+module.exports.fetchUsers = async (req, page = 1) => {
   const response = await module
     .exports(`/v1/users?page=${page}&limit=10`, {
       headers: {
@@ -40,5 +40,5 @@ module.exports.fetchUsers = async (req, page) => {
     })
     .then((x) => x.json());
 
-  return response.data;
+  return response;
 };
