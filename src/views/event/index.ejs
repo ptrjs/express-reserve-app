@@ -13,6 +13,7 @@
         </form>
       </div>
       <%- include('./table-event', { events, select }) %>
+      <%- include('../components/pagination', { page: +page, totalPage: +totalPage }) %>
     </div>
   </div>
   <%- include('./create', { action }) %>

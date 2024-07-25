@@ -3,10 +3,13 @@ const fetch = require('../../utils/fetch');
 const { createNavlist } = require('./home.controller');
 
 const renderIndex = async (req, res, action = 'none', message = '', local = {}) => {
+  const events = await fetch.fetchMyEvents(req);
   return res.render('event/index', {
     navs: createNavlist(req.session.user.role),
-    events: await fetch.fetchMyEvents(req),
+    events,
     select: req.query.select,
+    page: Math.min(req.query.page || 1, 1),
+    totalPage: 1,
     action,
     message,
     local,

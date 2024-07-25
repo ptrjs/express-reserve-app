@@ -1,5 +1,4 @@
 const moment = require('moment');
-const { UNAUTHORIZED } = require('http-status');
 const fetch = require('../../utils/fetch');
 
 const createNavlist = (role) => {
@@ -39,12 +38,6 @@ const homePage = async (req, res) => {
   }
 
   let events = await fetchEvents(req);
-
-  if (events.code === UNAUTHORIZED) {
-    req.session.token = undefined;
-    req.session.user = undefined;
-    return res.redirect('/');
-  }
 
   if (req.query.on === 'reservation')
     events = events.filter((x) => !!x.reservations.find((y) => y.userId === req.session.user.id));
