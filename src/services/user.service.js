@@ -84,7 +84,9 @@ const updateUserById = async (userId, updateBody) => {
   if (updateBody.email && (await isEmailTaken(updateBody.email))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-
+  if (updateBody.password) {
+    updateBody.password = bcrypt.hashSync(updateBody.password, 8);
+  }
   const updateUser = await prisma.user.update({
     where: {
       id: userId,

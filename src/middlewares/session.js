@@ -1,26 +1,25 @@
 const { NOT_FOUND } = require('http-status');
+const moment = require('moment');
 const fetch = require('../utils/fetch');
 const ApiError = require('../utils/ApiError');
+const catchAsync = require('../utils/catchAsync');
 
 const isExpire = (isostring) => {
-  const now = new Date();
-  const expireDate = new Date(isostring);
-  return now >= expireDate;
+  return moment(Date.now()).isSameOrAfter(moment(isostring).subtract(2, 'minutes'), 'minutes');
 };
 
 /**
  * @function whenLogin
  * @param {string} role
  */
-const whenLogin =
-  (adminOnly = false) =>
+const whenLogin = (adminOnly = false) =>
   /**
    * @function whenLoginMiddleware
    * @param {import("express").Request} req
    * @param {import("express").Response} res
    * @param {import("express").NextFunction} next
    */
-  async (req, res, next) => {
+  catchAsync(async (req, res, next) => {
     if (!req.session.token) return res.redirect('/auth/login');
     const { access, refresh } = req.session.token;
     if (isExpire(access.expires)) {
@@ -44,7 +43,7 @@ const whenLogin =
     if (adminOnly && (!req.session.user || req.session.user.role !== 'admin'))
       throw new ApiError(NOT_FOUND, 'Page not found');
     return next();
-  };
+  });
 
 /**
  * @function whenLogout

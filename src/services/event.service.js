@@ -42,6 +42,7 @@ const getEventById = async (id) => {
   });
 };
 
+
 /**
  * Update event by id
  * @param {ObjectId} eventId
@@ -84,10 +85,12 @@ const deleteEventById = async (eventId) => {
   return deleteEvents;
 };
 
-const getAllEvent = async (skip = 0, take = 10) => {
+const getAllEvent = async (page = 1, limit = 10) => {
+  const skip = (page - 1) * limit;
+
   const events = await prisma.event.findMany({
     skip: parseInt(skip),
-    take: parseInt(take),
+    take: parseInt(limit),
     include: {
       reservations: {
         include: {
@@ -118,6 +121,43 @@ const deleteManyEvents = async (ids) => {
   return deleteResult;
 };
 
+
+/**
+ * Get events by user id
+ * @param {ObjectId} userId
+ * @param {number} skip
+ * @param {number} take
+ * @returns {Promise<Array<Event>>}
+ */
+const getEventsByUserId = async (userId, page = 1, limit = 10) => {
+  const skip = (page - 1) * limit;
+
+  const userEvents = await prisma.reservation.findMany({
+    where: { userId },
+    include: {
+      Event: true,
+    },
+    skip: parseInt(skip),
+    take: parseInt(limit),
+  });
+
+  const totalUserEvents = await prisma.reservation.count({
+    where: { userId },
+  });
+
+    const events = userEvents.map(reservation => ({
+      ...reservation.Event,
+      reservationId: reservation.id
+    })
+  );
+
+  return {
+    events,
+    totalUserEvents,
+  };
+};
+
+
 module.exports = {
   createEvent,
   queryEvents,
@@ -126,5 +166,6 @@ module.exports = {
   getAllEvent,
   updateEventById,
   deleteEventById,
-  deleteManyEvents
+  deleteManyEvents,
+  getEventsByUserId
 };

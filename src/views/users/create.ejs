@@ -1,0 +1,30 @@
+<% if (method ==='create') { %>
+<div class="d-flex flex-column">
+  <div>
+    <a class="btn btn-danger text-center" href="/users">x</a>
+  </div>
+  <form class="border border-dark p-2" id="create-user" method="post" action="/users/create">
+    <h1 class="text-center">Masukan Data</h1>
+    <div class="form-group">
+      <label for="name">Nama</label>
+      <input class="form-control" name="name" type="text" value="<%= local?.fail?.body?.name %>" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input class="form-control" name="email" type="email" value="<%= local?.fail?.body?.email %>" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input class="form-control" name="password" type="password" value="<%= local?.fail?.body?.password %>" required>
+    </div>
+    <div class="form-group">
+      <label for="role">Role</label>
+      <select class="form-select" name="role" required>
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <input type="submit" class="btn btn-primary w-100">
+  </form>
+</div>
+<% } %>

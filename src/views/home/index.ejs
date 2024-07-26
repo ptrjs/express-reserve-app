@@ -33,7 +33,7 @@
       </thead>
       <tbody class="table-group-divider">
       <% events.forEach((x, i) => { %>
-        <% const reservationId = x.reservations.find(y => y.userId === user.id)?.id %>
+        <% const reservationId = x.reservationId %>
         <form method="post" action="/reservation/delete/<%= reservationId %>?redirect=/home?on=reservation" id="delete-<%= reservationId %>"></form>
         <form method="post" action="/reservation/<%= x.id %>" id="create-<%= x.id %>"></form>
         <tr class="text-center">
@@ -59,13 +59,14 @@
       <% }) %>
       </tbody>
     </table>
+    <%- include('../components/pagination', { page: +page, totalPage: +totalPage }) %>
   </div>
   <% if (!isNaN(select) && events[select]) { %>
   <div class="d-flex flex-column px-2">
     <h2 class="border border-dark text-center p-2">Detail</h2>
     <div class="border border-dark p-2">
       <h1><%= events[select].title %></h1>
-      <p class="lead"><%= events[select].description %></p>
+      <pre class="lead"><%= events[select].description %></pre>
       <h6>Mulai <small class="text-body-secondary"><%= format(events[select].startTime) %></small></h6>
       <h6>Selesai <small class="text-body-secondary"><%= format(events[select].endTime) %></small></h6>
     </div>

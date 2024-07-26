@@ -1,8 +1,6 @@
 <%- include('../components/header') %>
 
-<% const parseDate = (time) => new Date(time).toISOString().slice(0, new Date(time).toISOString().lastIndexOf(':')); %>
-
-<% if (action ==="update") { %>
+<% if (action ==="update" && events[select]) { %>
 <div class="d-flex flex-column p-2">
   <% if (message?.length) { %>
   <p class="border border-danger p-2"><%= message %></p>
@@ -28,7 +26,7 @@
       </div>
       <div class="form-group">
         <label for="quantity">Kuantitas</label>
-        <input class="form-control" name="quantity" type="number" min="0" value="<%= events[select].quantity %>"/>
+        <input class="form-control" name="quantity" type="number" min="1" value="<%= events[select].quantity %>"/>
       </div>
       <button class="form-control btn btn-outline-warning" type="submit">ubah</button>
     </form>

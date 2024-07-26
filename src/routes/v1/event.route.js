@@ -27,6 +27,10 @@ router
 );
 
 router
+  .route('/user-events')
+  .get(auth(), validate(eventValidation.getEvent), eventController.getUserEvents);
+
+router
   .route('/:eventId')
   .get(auth(), validate(eventValidation.getEvent), eventController.getEvent)
   .patch(
