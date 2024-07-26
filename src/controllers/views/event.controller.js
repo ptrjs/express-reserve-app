@@ -4,6 +4,7 @@ const { createNavlist } = require('./home.controller');
 
 const renderIndex = async (req, res, action = 'none', message = '', local = {}) => {
   const response = await fetch.fetchMyEvents(req);
+  const users = action === 'select' ? await fetch.fetchUsers(req).then((x) => x.data) : [];
   return res.render('event/index', {
     navs: createNavlist(req.session.user.role),
     events: response.results,
@@ -13,6 +14,7 @@ const renderIndex = async (req, res, action = 'none', message = '', local = {}) 
     action,
     message,
     local,
+    users,
     parseDate: (date) => moment(date).format('YYYY-MM-DDThh:mm'),
   });
 };
@@ -25,7 +27,7 @@ const renderIndex = async (req, res, action = 'none', message = '', local = {}) 
 const eventPage = async (req, res) => {
   const mode = req.query.select ? 'select' : '';
   if (Reflect.has(req.query, 'print') && req.query.select) {
-    const events = await fetch.fetchMyEvents(req);
+    const { results: events } = await fetch.fetchMyEvents(req);
     const event = events[req.query.select];
     if (event) return res.render('event/print-reservation', { event });
   }
