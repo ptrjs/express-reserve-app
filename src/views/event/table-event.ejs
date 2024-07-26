@@ -6,7 +6,8 @@
   <thead>
     <tr class="text-center">
       <th scope="col"><button form="delete-event-many" class="btn btn-outline-danger" type="submit">Del</button></th>
-      <th scope="col">Nama</th>
+      <th scope="col">Judul</th>
+      <th scope="col">Slot</th>
       <th scope="col">Operasi</th>
     </tr>
   </thead>
@@ -18,10 +19,13 @@
         <a class="text-decoration-none" href="/reservation/<%= x.id %>"><%= x.title %></a>
       </td>
       <td>
+        <%= x.quantity %>
+      </td>
+      <td>
         <form id="delete-<%= x.id %>" method="post" action="/event/delete?id=<%= x.id %>"></form>
-        <a class="btn btn-outline-warning" role="button" href="/event/update?select=<%= i %>">ubah</a>
-        <button class="btn btn-outline-danger" type="submit" form="delete-<%= x.id %>">hapus</button>
-        <a role="button" href="?select=<%= i %>" class="btn btn-outline-primary">peserta</a>
+        <a class="btn btn-outline-warning btn-sm" role="button" href="/event/update?select=<%= i %>">ubah</a>
+        <button class="btn btn-outline-danger btn-sm" type="submit" form="delete-<%= x.id %>">hapus</button>
+        <a role="button" href="?select=<%= i %>" class="btn btn-outline-primary btn-sm">peserta</a>
       </td>
     </tr>
   <% }); %>

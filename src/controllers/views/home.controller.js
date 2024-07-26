@@ -14,7 +14,7 @@ const createNavlist = (role) => {
 const fetchEvents = async (req) => {
   const response = await fetch(`/v1/event?page=${req.query.page || 1}&limit=10`, {
     headers: {
-      'Content-Type': 'application-json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${req.session.token.access.token}`,
     },
   }).then((x) => x.json());
@@ -25,7 +25,7 @@ const fetchEvents = async (req) => {
 const fetchReservations = async (req) => {
   const response = await fetch(`/v1/event/user-events?page=${req.query.page || 1}&limit=10`, {
     headers: {
-      'Content-Type': 'application-json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${req.session.token.access.token}`,
     },
   }).then((x) => x.json());
