@@ -63,12 +63,12 @@ const reservationPageCreateForm = async (req, res) => {
         Authorization: `Bearer ${req.session.token.access.token}`,
       },
       body: JSON.stringify({
-        userId: req.session.user.id,
+        userId: req.body.userId || req.session.user.id,
         eventId,
       }),
     });
   }
-  res.redirect('/home');
+  return res.redirect(req.query.redirect || '/home');
 };
 
 /**

@@ -1,3 +1,4 @@
+<% if (action !== 'select') { %>
 <% if (events.length) { %>
 
 <form id="delete-event-many" action="/event/delete?id=all" method="post"></form>
@@ -33,4 +34,5 @@
 </table>
 <% } else { %>
 <h2 class="border border-dark p-2">Kamu belum membuat event!</h2>
+<% } %>
 <% } %>

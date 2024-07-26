@@ -7,38 +7,81 @@
     <div class="d-flex flex-row border border-dark p-2">
       <h2 class="me-auto">Peserta: <%= events[select].title %></h2>
       <a href="/event?select=<%= select %>&print=" class="btn btn-outline-primary">print</a>
+      <a href="/event" class="btn btn-outline-danger">kembali</a>
     </div>
-    <% if (events[select].reservations.length) { %>
-    <table class="table border border-dark p-2">
-      <thead>
-        <tr class="text-center">
-          <th scope="col"><button form="delete-reservation-many" type="submit" class="btn btn-outline-danger">Del</button></th>
-          <th scope="col">Nama Peserta</th>
-          <th scope="col">Email</th>
-          <th scope="col">Operasi</th>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <% events[select].reservations.forEach((x, i) => { %>
-        <tr class="text-center">
-          <th scope="row"><input form="delete-reservation-many" type="checkbox" class="form-check-input" value="<%= x.id %>" name="<%= i %>"></th>
-          <td>
-            <%= x.User.name %>
-          </td>
-          <td>
-            <%= x.User.email %>
-          </td>
-          <td>
-            <form id="delete-reservation-<%= x.id %>" method="post" action="/reservation/delete/<%= x.id %>?redirect=/event?select=<%= select %>"></form>
-            <button class="btn btn-outline-danger" form="delete-reservation-<%= x.id %>">hapus</button>
-          </td>
-        </tr>
-      <% }); %>
-      </tbody>
-    </table>
-    <% } else { %>
-    <h2 class="border border-dark p-2">Waduh belum ada peserta nih!</h2>
-    <% } %>
+    <div class="d-flex flex-row gap-2">
+      <div class="d-flex flex-column">
+        <h3 class="text-center p-2 border border-dark">Mengikuti</h3>
+        <% if (events[select].reservations.length) { %>
+        <table class="table border border-dark p-2">
+          <thead>
+            <tr class="text-center">
+              <th scope="col"><button form="delete-reservation-many" type="submit" class="btn btn-outline-danger">Del</button></th>
+              <th scope="col">Nama Peserta</th>
+              <th scope="col">Email</th>
+              <th scope="col">Operasi</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <% events[select].reservations.forEach((x, i) => { %>
+            <tr class="text-center">
+              <th scope="row"><input form="delete-reservation-many" type="checkbox" class="form-check-input" value="<%= x.id %>" name="<%= i %>"></th>
+              <td>
+                <%= x.User.name %>
+              </td>
+              <td>
+                <%= x.User.email %>
+              </td>
+              <td>
+                <form id="delete-reservation-<%= x.id %>" method="post" action="/reservation/delete/<%= x.id %>?redirect=/event?select=<%= select %>"></form>
+                <button class="btn btn-outline-danger" form="delete-reservation-<%= x.id %>">hapus</button>
+              </td>
+            </tr>
+          <% }); %>
+          </tbody>
+        </table>
+        <% } else { %>
+        <h2 class="border border-dark p-2">Waduh belum ada peserta nih!</h2>
+        <% } %>
+      </div>
+      <div class="d-flex flex-column">
+        <h3 class="text-center p-2 border border-dark">Tidak mengikuti</h3>
+        <% const notReserved = users.filter(x => !events[select].reservations.find(y => y.User.id === x.id)) %>
+        <% if (notReserved.length) { %>
+        <table class="table border border-dark p-2">
+          <thead>
+            <tr class="text-center">
+              <th scope="col"><button type="submit" class="btn btn-outline-success">Tambah</button></th>
+              <th scope="col">Nama Peserta</th>
+              <th scope="col">Email</th>
+              <th scope="col">Operasi</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <% notReserved.forEach((x, i) => { %>
+            <tr class="text-center">
+              <th scope="row"><input form="delete-reservation-many" type="checkbox" class="form-check-input" value="<%= x.id %>" name="<%= i %>"></th>
+              <td>
+                <%= x.name %>
+              </td>
+              <td>
+                <%= x.email %>
+              </td>
+              <td>
+                <form id="add-reservation-<%= x.id %>" method="post" action="/reservation/<%= events[select].id %>?redirect=/event?select=<%= select %>">
+                  <input type="hidden" value="<%= x.id %>" name="userId">
+                </form>
+                <button class="btn btn-outline-success" form="add-reservation-<%= x.id %>">tambah</button>
+              </td>
+            </tr>
+          <% }); %>
+          </tbody>
+        </table>
+        <% } else { %>
+        <h2 class="border border-dark p-2">Waduh belum ada peserta nih!</h2>
+        <% } %>
+      </div>
+    </div>
   </div>
 </div>
 <% } %>

@@ -4,6 +4,7 @@
 <div class="d-flex flex-row mb-3">
   <div class="d-flex p-2">
     <div class="d-flex flex-column gap-2">
+      <% if (action !== 'select') { %>
       <div class="border border-dark p-2">
         <form action="/event/create">
           <div class="d-flex mb-3">
@@ -12,12 +13,13 @@
           </div>
         </form>
       </div>
-      <%- include('./table-event', { events, select }) %>
+      <% } %>
+      <%- include('./table-event', { events, select, action }) %>
       <%- include('../components/pagination', { page: +page, totalPage: +totalPage }) %>
     </div>
   </div>
   <%- include('./create', { action }) %>
-  <%- include('./table-reservations', { action }) %>
+  <%- include('./table-reservations', { action, users }) %>
   <%- include('./update', { action, select, parseDate }) %>
 </div>
 <%- include('../components/footer') %>
