@@ -12,16 +12,25 @@ const createNavlist = (role) => {
  * @param {import("express").Request} req
  */
 const fetchEvents = async (req) => {
-  const response = await fetch('/v1/event', {
+  const response = await fetch(`/v1/event?page=${req.query.page || 1}&limit=10`, {
     headers: {
       'Content-Type': 'application-json',
       Authorization: `Bearer ${req.session.token.access.token}`,
     },
   }).then((x) => x.json());
 
-  if (response.code) return response;
+  return response;
+};
 
-  return response.results;
+const fetchReservations = async (req) => {
+  const response = await fetch(`/v1/event/user-events?page=${req.query.page || 1}&limit=10`, {
+    headers: {
+      'Content-Type': 'application-json',
+      Authorization: `Bearer ${req.session.token.access.token}`,
+    },
+  }).then((x) => x.json());
+
+  return response;
 };
 
 /**
@@ -37,11 +46,11 @@ const homePage = async (req, res) => {
     role = req.session.user.role;
   }
 
-  let events = await fetchEvents(req);
+  const response = req.query.on === 'reservation' ? await fetchReservations(req) : await fetchEvents(req);
+  let events = response.results;
 
-  if (req.query.on === 'reservation')
-    events = events.filter((x) => !!x.reservations.find((y) => y.userId === req.session.user.id));
-  else events = events.filter((x) => x.quantity && !x.reservations.find((y) => y.userId === req.session.user.id));
+  if (req.query.on !== 'reservation')
+    events = events.filter((x) => x.quantity && !x.reservations.find((y) => y.userId === req.session.user.id));
 
   const format = (date) => moment(date).format('MMMM Do YYYY, h:mm:ss a');
 
@@ -53,6 +62,8 @@ const homePage = async (req, res) => {
     user: req.session.user,
     format,
     select: req.query.select,
+    page: req.query.page || 1,
+    totalPage: response.totalPages || 1,
   });
 };
 

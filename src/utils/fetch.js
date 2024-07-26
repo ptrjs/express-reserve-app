@@ -15,7 +15,7 @@ module.exports = async function (path, init) {
  */
 module.exports.fetchMyEvents = async (req) => {
   const response = await module
-    .exports('/v1/event', {
+    .exports(`/v1/event/user-events?page=${req.query.page || 1}&limit=10`, {
       headers: {
         'Content-Type': 'application-json',
         Authorization: `Bearer ${req.session.token.access.token}`,
@@ -23,7 +23,7 @@ module.exports.fetchMyEvents = async (req) => {
     })
     .then((x) => x.json());
 
-  return response.results.filter((x) => x.createdById === req.session.user.id);
+  return response;
 };
 
 /**
