@@ -6,24 +6,24 @@ Admin Role: Admins can create and manage events.
 User Role: Regular users can browse available events and make reservations.
 
 ## Features
-Admin Features:
-Manage users (create, update, delete).
-Manage events (create, update, delete).
-View the list of reservations for each event.
-User Features:
-Browse and search for available events.
-Make reservations for desired events.
+Admin Features: <br>
+Manage users (create, update, delete). <br>
+Manage events (create, update, delete). <br>
+View the list of reservations for each event. <br>
+User Features: <br>
+Browse and search for available events. <br>
+Make reservations for desired events. <br>
 
 ## Tech Stack
-Backend:
-Node.js
-Express.js
-Prisma (ORM)
-MySQL (Database)
-Frontend:
-EJS
-HTML, CSS, JavaScript
-Bootstrap
+<b>Backend:</b> <br>
+Node.js <br>
+Express.js <br>
+Prisma (ORM) <br>
+MySQL (Database) <br>
+<b>Frontend:</b> <br>
+EJS <br>
+HTML, CSS, JavaScript <br>
+Bootstrap <br>
 
 ## ERD
 ![image](https://github.com/user-attachments/assets/2b9d3a5e-5106-46d6-bbf3-4a413725ffa6)
