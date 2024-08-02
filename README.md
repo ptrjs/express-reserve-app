@@ -26,7 +26,7 @@ HTML, CSS, JavaScript
 Bootstrap
 
 ## ERD
-![image](https://github.com/user-attachments/assets/2a3d9023-a9c7-458e-bbc7-7b03f15762ee)
+![image](https://github.com/user-attachments/assets/2b9d3a5e-5106-46d6-bbf3-4a413725ffa6)
 
 
 # Zexo Backend Service
