@@ -1,3 +1,34 @@
+# Reservation System
+<b>One Week Challenge Project</b>
+## Overview
+This project is a part of a one-week challenge where we aimed to solve a real-world problem by developing a Reservation System. The primary goal of this application is to streamline the process of event reservations.
+Admin Role: Admins can create and manage events.
+User Role: Regular users can browse available events and make reservations.
+
+## Features
+Admin Features:
+Manage users (create, update, delete).
+Manage events (create, update, delete).
+View the list of reservations for each event.
+User Features:
+Browse and search for available events.
+Make reservations for desired events.
+
+## Tech Stack
+Backend:
+Node.js
+Express.js
+Prisma (ORM)
+MySQL (Database)
+Frontend:
+EJS
+HTML, CSS, JavaScript
+Bootstrap
+
+## ERD
+![image](https://github.com/user-attachments/assets/2a3d9023-a9c7-458e-bbc7-7b03f15762ee)
+
+
 # Zexo Backend Service
 [![Build Status](https://travis-ci.org/hagopj13/node-express-boilerplate.svg?branch=master)](https://travis-ci.org/hagopj13/node-express-boilerplate)
 [![Coverage Status](https://coveralls.io/repos/github/hagopj13/node-express-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/hagopj13/node-express-boilerplate?branch=master)
